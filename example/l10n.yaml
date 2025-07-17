@@ -1,0 +1,51 @@
+# Flutter 国际化配置文件
+# 这个文件告诉 Flutter 如何生成本地化代码
+
+# ARB 文件所在目录
+arb-dir: lib/l10n
+
+# 模板 ARB 文件（通常是英文）
+template-arb-file: app_en.arb
+
+# 生成的本地化文件名
+output-localization-file: app_localizations.dart
+
+# 生成的本地化类名
+output-class: AppLocalizations
+
+# 生成文件的输出目录
+output-dir: lib/l10n
+
+# 首选支持的语言环境
+preferred-supported-locales: ["en"]
+
+# 是否生成合成包
+synthetic-package: false
+
+# 项目目录（相对于 l10n.yaml 文件）
+project-dir: .
+
+# 是否使用延迟加载
+use-deferred-loading: false
+
+# 生成的 getter 名称（可选）
+# gen-l10n: true
+
+# 是否生成空的构造函数
+# nullable-getter: true
+
+# 头部注释（可选）
+# header: |
+#   /// Generated file. Do not edit.
+#   ///
+#   /// This file contains the localization delegates and supported locales
+#   /// for the application.
+
+# 是否启用转义
+# escape-dollar: false
+
+# 格式化选项
+# format: false
+
+# 是否使用命名构造函数
+# use-named-parameters: false

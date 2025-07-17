@@ -1,0 +1,390 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flutter i18n Example",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "Welcome to Flutter!",
+  "@welcome": {
+    "description": "Welcome message displayed on the home screen"
+  },
+  "hello": "Hello",
+  "@hello": {
+    "description": "A simple greeting"
+  },
+  "helloUser": "Hello, {name}!",
+  "@helloUser": {
+    "description": "Greeting with user name",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The user's name"
+      }
+    }
+  },
+  "itemCount": "{count, plural, =0{No items} =1{One item} other{{count} items}}",
+  "@itemCount": {
+    "description": "Number of items with plural support",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "The number of items"
+      }
+    }
+  },
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Text for the login button"
+  },
+  "logoutButton": "Logout",
+  "@logoutButton": {
+    "description": "Text for the logout button"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile page title"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting label"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Dark mode setting label"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "invalidEmail": "Please enter a valid email address",
+  "@invalidEmail": {
+    "description": "Error message for invalid email"
+  },
+  "passwordTooShort": "Password must be at least {minLength} characters",
+  "@passwordTooShort": {
+    "description": "Error message for short password",
+    "placeholders": {
+      "minLength": {
+        "type": "int",
+        "description": "Minimum password length"
+      }
+    }
+  },
+  "passwordMismatch": "Passwords do not match",
+  "@passwordMismatch": {
+    "description": "Error message when passwords don't match"
+  },
+  "loginSuccess": "Login successful!",
+  "@loginSuccess": {
+    "description": "Success message after login"
+  },
+  "translationInfo": "Translation Information",
+  "@translationInfo": {
+    "description": "Title for translation information dialog"
+  },
+  "partialTranslationWarning": "This feature has partial translations. Some languages may show fallback text.",
+  "@partialTranslationWarning": {
+    "description": "Warning message about partial translations"
+  },
+  "translationStatus": "Translation Status:",
+  "@translationStatus": {
+    "description": "Label for translation status section"
+  },
+  "englishTranslation": "English",
+  "@englishTranslation": {
+    "description": "English language name"
+  },
+  "chineseTranslation": "Chinese",
+  "@chineseTranslation": {
+    "description": "Chinese language name"
+  },
+  "japaneseTranslation": "Japanese",
+  "@japaneseTranslation": {
+    "description": "Japanese language name"
+  },
+  "spanishTranslation": "Spanish",
+  "@spanishTranslation": {
+    "description": "Spanish language name"
+  },
+  "partiallyTranslatedKey": "Partially Translated Feature",
+  "@partiallyTranslatedKey": {
+    "description": "Example of a key that might be missing in some languages"
+  },
+  "firstName": "First Name",
+  "@firstName": {
+    "description": "First name field label"
+  },
+  "lastName": "Last Name",
+  "@lastName": {
+    "description": "Last name field label"
+  },
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Phone number field label"
+  },
+  "address": "Address",
+  "@address": {
+    "description": "Address field label"
+  },
+  "city": "City",
+  "@city": {
+    "description": "City field label"
+  },
+  "country": "Country",
+  "@country": {
+    "description": "Country field label"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error label"
+  },
+  "success": "Success",
+  "@success": {
+    "description": "Generic success label"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh button text"
+  },
+  "refreshData": "Refresh Data",
+  "@refreshData": {
+    "description": "Refresh data button text"
+  },
+  "personalInfo": "Personal Information",
+  "@personalInfo": {
+    "description": "Personal information section title"
+  },
+  "pleaseEnterFirstName": "Please enter your first name",
+  "@pleaseEnterFirstName": {
+    "description": "First name validation message"
+  },
+  "pleaseEnterLastName": "Please enter your last name",
+  "@pleaseEnterLastName": {
+    "description": "Last name validation message"
+  },
+  "contactInfo": "Contact Information",
+  "@contactInfo": {
+    "description": "Contact information section title"
+  },
+  "addressInfo": "Address Information",
+  "@addressInfo": {
+    "description": "Address information section title"
+  },
+  "profileSaved": "Profile saved successfully!",
+  "@profileSaved": {
+    "description": "Profile save success message"
+  },
+  "editUserInfo": "Edit user information",
+  "@editUserInfo": {
+    "description": "Edit user info tooltip"
+  },
+
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Label for language selection dropdown"
+  },
+  "restartToApply": "Restart app to apply changes",
+  "@restartToApply": {
+    "description": "Message indicating restart is needed for language changes"
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Appearance settings section title"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Dark mode toggle label"
+  },
+  "useDarkTheme": "Use dark theme",
+  "@useDarkTheme": {
+    "description": "Dark theme description when enabled"
+  },
+  "useLightTheme": "Use light theme",
+  "@useLightTheme": {
+    "description": "Light theme description when enabled"
+  },
+  "themeColor": "Theme Color",
+  "@themeColor": {
+    "description": "Theme color setting label"
+  },
+  "customizeThemeColor": "Customize app theme color",
+  "@customizeThemeColor": {
+    "description": "Theme color customization description"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications settings section title"
+  },
+  "enableNotifications": "Enable Notifications",
+  "@enableNotifications": {
+    "description": "Enable notifications toggle label"
+  },
+  "receiveAppNotifications": "Receive app notifications",
+  "@receiveAppNotifications": {
+    "description": "Notifications enabled description"
+  },
+  "notificationsDisabled": "Notifications disabled",
+  "@notificationsDisabled": {
+    "description": "Notifications disabled description"
+  },
+  "sound": "Sound",
+  "@sound": {
+    "description": "Sound setting label"
+  },
+  "playNotificationSound": "Play notification sound",
+  "@playNotificationSound": {
+    "description": "Sound enabled description"
+  },
+  "silentMode": "Silent mode",
+  "@silentMode": {
+    "description": "Sound disabled description"
+  },
+  "accessibility": "Accessibility",
+  "@accessibility": {
+    "description": "Accessibility settings section title"
+  },
+  "fontSize": "Font Size",
+  "@fontSize": {
+    "description": "Font size setting label"
+  },
+  "adjustTextSizeForReadability": "Adjust text size for better readability",
+  "@adjustTextSizeForReadability": {
+    "description": "Font size adjustment description"
+  },
+  "previewText": "Preview",
+  "@previewText": {
+    "description": "Preview label for font size"
+  },
+  "sampleText": "This is sample text",
+  "@sampleText": {
+    "description": "Sample text for font size preview"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About settings section title"
+  },
+  "appVersion": "App Version",
+  "@appVersion": {
+    "description": "App version setting label"
+  },
+  "helpAndSupport": "Help & Support",
+  "@helpAndSupport": {
+    "description": "Help and support setting label"
+  },
+  "getHelpOrContactSupport": "Get help or contact support",
+  "@getHelpOrContactSupport": {
+    "description": "Help and support description"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy setting label"
+  },
+  "viewOurPrivacyPolicy": "View our privacy policy",
+  "@viewOurPrivacyPolicy": {
+    "description": "Privacy policy description"
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Reset settings section title"
+  },
+  "resetAllSettings": "Reset All Settings",
+  "@resetAllSettings": {
+    "description": "Reset all settings button text"
+  },
+  "languageChanged": "Language Changed",
+  "@languageChanged": {
+    "description": "Language change dialog title"
+  },
+  "languageChangeMessage": "Language settings have been updated. Please restart the app to apply changes.",
+  "@languageChangeMessage": {
+    "description": "Language change confirmation message"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "themeColorPickerComingSoon": "Theme color picker coming soon!",
+  "@themeColorPickerComingSoon": {
+    "description": "Theme color picker placeholder message"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version label"
+  },
+  "buildNumber": "Build Number",
+  "@buildNumber": {
+    "description": "Build number label"
+  },
+  "releaseDate": "Release Date",
+  "@releaseDate": {
+    "description": "Release date label"
+  },
+  "helpContactMessage": "For help, please email us at support@example.com",
+  "@helpContactMessage": {
+    "description": "Help contact information message"
+  },
+  "privacyPolicyContent": "We value your privacy and are committed to protecting your personal information. This app collects minimal data necessary for functionality and does not share your information with third parties without your consent.",
+  "@privacyPolicyContent": {
+    "description": "Privacy policy content text"
+  },
+  "confirmReset": "Confirm Reset",
+  "@confirmReset": {
+    "description": "Reset confirmation dialog title"
+  },
+  "resetConfirmationMessage": "This will reset all settings to their default values. This action cannot be undone.",
+  "@resetConfirmationMessage": {
+    "description": "Reset confirmation message"
+  },
+  "settingsReset": "Settings have been reset",
+  "@settingsReset": {
+    "description": "Settings reset success message"
+  }
+}

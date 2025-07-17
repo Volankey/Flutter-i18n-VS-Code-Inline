@@ -1,0 +1,211 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Flutter 国际化示例",
+  "welcome": "欢迎使用 Flutter！",
+  "hello": "你好",
+  "helloUser": "你好，{name}！",
+  "itemCount": "{count, plural, =0{没有项目} =1{一个项目} other{{count} 个项目}}",
+  "loginButton": "登录",
+  "logoutButton": "退出登录",
+  "profile": "个人资料",
+  "settings": "设置",
+  "language": "语言",
+  "theme": "主题",
+  "darkMode": "深色模式",
+  "save": "保存",
+  "cancel": "取消",
+  "close": "关闭",
+  "email": "邮箱",
+  "password": "密码",
+  "confirmPassword": "确认密码",
+  "invalidEmail": "请输入有效的邮箱地址",
+  "passwordTooShort": "密码长度至少为 {minLength} 个字符",
+  "passwordMismatch": "密码不匹配",
+  "loginSuccess": "登录成功！",
+  "translationInfo": "翻译信息",
+  "partialTranslationWarning": "此功能的翻译不完整。某些语言可能显示备用文本。",
+  "translationStatus": "翻译状态：",
+  "englishTranslation": "英语",
+  "chineseTranslation": "中文",
+  "japaneseTranslation": "日语",
+  "spanishTranslation": "西班牙语",
+  "partiallyTranslatedKey": "部分翻译功能",
+  "firstName": "名字",
+  "lastName": "姓氏",
+  "phoneNumber": "电话号码",
+  "address": "地址",
+  "city": "城市",
+  "country": "国家",
+  "edit": "编辑",
+  "delete": "删除",
+  "confirm": "确认",
+  "loading": "加载中...",
+  "error": "错误",
+  "success": "成功",
+  "retry": "重试",
+  "refresh": "刷新",
+  "@refresh": {
+    "description": "刷新按钮文本"
+  },
+
+  "selectLanguage": "选择语言",
+  "@selectLanguage": {
+    "description": "语言选择下拉框标签"
+  },
+  "restartToApply": "重启应用后生效",
+  "@restartToApply": {
+    "description": "语言更改需要重启的提示信息"
+  },
+  "appearance": "外观",
+  "@appearance": {
+    "description": "外观设置部分标题"
+  },
+  "darkMode": "深色模式",
+  "@darkMode": {
+    "description": "深色模式切换标签"
+  },
+  "useDarkTheme": "使用深色主题",
+  "@useDarkTheme": {
+    "description": "启用深色主题时的描述"
+  },
+  "useLightTheme": "使用浅色主题",
+  "@useLightTheme": {
+    "description": "启用浅色主题时的描述"
+  },
+  "themeColor": "主题颜色",
+  "@themeColor": {
+    "description": "主题颜色设置标签"
+  },
+  "customizeThemeColor": "自定义应用主题颜色",
+  "@customizeThemeColor": {
+    "description": "主题颜色自定义描述"
+  },
+  "notifications": "通知",
+  "@notifications": {
+    "description": "通知设置部分标题"
+  },
+  "enableNotifications": "启用通知",
+  "@enableNotifications": {
+    "description": "启用通知切换标签"
+  },
+  "receiveAppNotifications": "接收应用通知",
+  "@receiveAppNotifications": {
+    "description": "通知启用时的描述"
+  },
+  "notificationsDisabled": "通知已禁用",
+  "@notificationsDisabled": {
+    "description": "通知禁用时的描述"
+  },
+  "sound": "声音",
+  "@sound": {
+    "description": "声音设置标签"
+  },
+  "playNotificationSound": "播放通知声音",
+  "@playNotificationSound": {
+    "description": "声音启用时的描述"
+  },
+  "silentMode": "静音模式",
+  "@silentMode": {
+    "description": "声音禁用时的描述"
+  },
+  "accessibility": "辅助功能",
+  "@accessibility": {
+    "description": "辅助功能设置部分标题"
+  },
+  "fontSize": "字体大小",
+  "@fontSize": {
+    "description": "字体大小设置标签"
+  },
+  "adjustTextSizeForReadability": "调整文本大小以提高可读性",
+  "@adjustTextSizeForReadability": {
+    "description": "字体大小调整描述"
+  },
+  "previewText": "预览文本",
+  "@previewText": {
+    "description": "字体大小预览标签"
+  },
+  "sampleText": "这是示例文本",
+  "@sampleText": {
+    "description": "字体大小预览的示例文本"
+  },
+  "about": "关于",
+  "@about": {
+    "description": "关于设置部分标题"
+  },
+  "appVersion": "应用版本",
+  "@appVersion": {
+    "description": "应用版本设置标签"
+  },
+  "helpAndSupport": "帮助与支持",
+  "@helpAndSupport": {
+    "description": "帮助与支持设置标签"
+  },
+  "getHelpOrContactSupport": "获取帮助或联系支持",
+  "@getHelpOrContactSupport": {
+    "description": "帮助与支持描述"
+  },
+  "privacyPolicy": "隐私政策",
+  "@privacyPolicy": {
+    "description": "隐私政策设置标签"
+  },
+  "viewOurPrivacyPolicy": "查看我们的隐私政策",
+  "@viewOurPrivacyPolicy": {
+    "description": "隐私政策描述"
+  },
+  "reset": "重置",
+  "@reset": {
+    "description": "重置设置部分标题"
+  },
+  "resetAllSettings": "重置所有设置",
+  "@resetAllSettings": {
+    "description": "重置所有设置按钮文本"
+  },
+  "languageChanged": "语言已更改",
+  "@languageChanged": {
+    "description": "语言更改对话框标题"
+  },
+  "languageChangeMessage": "语言设置已更新。请重启应用以应用更改。",
+  "@languageChangeMessage": {
+    "description": "语言更改确认消息"
+  },
+  "close": "关闭",
+  "@close": {
+    "description": "关闭按钮文本"
+  },
+  "themeColorPickerComingSoon": "主题颜色选择器即将推出！",
+  "@themeColorPickerComingSoon": {
+    "description": "主题颜色选择器占位消息"
+  },
+  "version": "版本",
+  "@version": {
+    "description": "版本标签"
+  },
+  "buildNumber": "构建号",
+  "@buildNumber": {
+    "description": "构建号标签"
+  },
+  "releaseDate": "发布日期",
+  "@releaseDate": {
+    "description": "发布日期标签"
+  },
+  "helpContactMessage": "如需帮助，请发送邮件至 support@example.com",
+  "@helpContactMessage": {
+    "description": "帮助联系信息消息"
+  },
+  "privacyPolicyContent": "我们重视您的隐私，致力于保护您的个人信息。本应用仅收集功能所需的最少数据，未经您同意不会与第三方共享您的信息。",
+  "@privacyPolicyContent": {
+    "description": "隐私政策内容文本"
+  },
+  "confirmReset": "确认重置",
+  "@confirmReset": {
+    "description": "重置确认对话框标题"
+  },
+  "resetConfirmationMessage": "这将重置所有设置到默认值。此操作无法撤销。",
+  "@resetConfirmationMessage": {
+    "description": "重置确认消息"
+  },
+  "settingsReset": "设置已重置",
+  "@settingsReset": {
+    "description": "设置重置成功消息"
+  }
+}

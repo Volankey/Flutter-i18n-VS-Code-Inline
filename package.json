@@ -1,0 +1,133 @@
+{
+  "name": "flutter-i18n-vscode-inline",
+  "displayName": "Flutter i18n VsCode Inline",
+  "description": "Supercharge your Flutter internationalization (i18n) and localization (l10n) workflow. Stop switching between `.dart` code and `.arb` files. **Preview, edit, and manage all your translations directly within your code editor!",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:dart",
+    "workspaceContains:**/pubspec.yaml",
+    "workspaceContains:**/l10n.yaml",
+    "workspaceContains:**/*.arb"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "flutter-i18n-vscode-inline.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "flutter-i18n-vscode-inline.editTranslation",
+        "title": "Edit Translation"
+      },
+      {
+        "command": "flutter-i18n-vscode-inline.showStatistics",
+        "title": "Show Translation Statistics"
+      }
+    ],
+    "configuration": {
+      "title": "Flutter i18n VsCode Inline",
+      "properties": {
+        "flutter-i18n-vscode-inline.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeLens for inline translation preview"
+        },
+        "flutter-i18n-vscode-inline.enableHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover tooltips for translation preview"
+        },
+        "flutter-i18n-vscode-inline.previewLanguage": {
+          "type": "string",
+          "default": "en",
+          "description": "Default language for translation preview"
+        },
+        "flutter-i18n-vscode-inline.showTranslationStats": {
+           "type": "boolean",
+           "default": false,
+           "description": "Show translation statistics in CodeLens"
+         },
+         "flutter-i18n-vscode-inline.customPatterns": {
+           "type": "object",
+           "default": {},
+           "description": "Custom regex patterns for i18n detection",
+           "properties": {
+             "generatedClass": {
+               "type": "string",
+               "description": "Pattern for S.of(context).keyName style (e.g., \"\\\\bS\\\\.of\\\\(\\\\s*context\\\\s*\\\\)\\\\.(\\\\w+)\")"
+             },
+             "contextL10n": {
+               "type": "string",
+               "description": "Pattern for context.l10n.keyName style"
+             },
+             "appLocalizations": {
+               "type": "string",
+               "description": "Pattern for AppLocalizations.of(context).keyName style"
+             },
+             "intlMessage": {
+               "type": "string",
+               "description": "Pattern for Intl.message style"
+             },
+             "variableDeclarations": {
+               "type": "array",
+               "items": {
+                 "type": "string"
+               },
+               "description": "Patterns for detecting i18n variable declarations"
+             }
+           }
+         },
+         "flutter-i18n-vscode-inline.enableCustomPatterns": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable custom regex patterns (when disabled, uses built-in patterns)"
+        },
+        "flutter-i18n-vscode-inline.showTranslationPreview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show highlighted translation preview at the top of hover content"
+        }
+       }
+     },
+     "languages": [
+       {
+         "id": "dart",
+         "extensions": [".dart"]
+       }
+     ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.89.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "esbuild": "^0.25.3",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.3",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}

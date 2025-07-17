@@ -1,0 +1,17 @@
+{
+  "flutter-i18n-vscode-inline.enableCustomPatterns": true,
+  "flutter-i18n-vscode-inline.customPatterns": {
+    "generatedClass": "\\bS\\.of\\(\\s*context\\s*\\)\\.([a-zA-Z][a-zA-Z0-9_]*)(?:\\(([^)]*)\\))?",
+    "contextL10n": "\\bcontext\\.l10n\\.([a-zA-Z][a-zA-Z0-9_]*)(?:\\(([^)]*)\\))?",
+    "appLocalizations": "\\bAppLocalizations\\.of\\(\\s*context\\s*\\)!?\\.([a-zA-Z][a-zA-Z0-9_]*)(?:\\(([^)]*)\\))?",
+    "intlMessage": "\\bIntl\\.message\\(\\s*['\"]([^'\"]*)['\"]\\s*,\\s*name\\s*:\\s*['\"]([a-zA-Z][a-zA-Z0-9_]*)['\"](?:\\s*,\\s*args\\s*:\\s*\\[([^\\]]*)\\])?\\s*\\)",
+    "variableDeclarations": [
+      "\\bfinal\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*AppLocalizations\\.of\\(\\s*context\\s*\\)!?",
+      "\\bfinal\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*context\\.l10n",
+      "\\bfinal\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*S\\.of\\(\\s*context\\s*\\)",
+      "\\bvar\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*AppLocalizations\\.of\\(\\s*context\\s*\\)!?",
+      "\\bvar\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*context\\.l10n",
+      "\\bvar\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*S\\.of\\(\\s*context\\s*\\)"
+    ]
+  }
+}
