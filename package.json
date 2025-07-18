@@ -1,7 +1,7 @@
 {
   "name": "flutter-i18n-vscode-inline",
   "displayName": "Flutter i18n VsCode Inline",
-  "description": "Supercharge your Flutter internationalization (i18n) and localization (l10n) workflow. Stop switching between `.dart` code and `.arb` files. **Preview, edit, and manage all your translations directly within your code editor!",
+  "description": "Preview, edit, and manage all your translations directly within your code editor!",
   "version": "0.0.1",
   "publisher": "volankey",
   "license": "MIT",
