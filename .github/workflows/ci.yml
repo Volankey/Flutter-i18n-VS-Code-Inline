@@ -58,46 +58,10 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
-  build:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build extension
-        id: build_extension
-        run: |
-          pnpm run vsce:package
-          VSIX_FILE=$(ls flutter-i18n-vscode-inline-*.vsix)
-          echo "vsix_file=$VSIX_FILE" >> $GITHUB_OUTPUT
-          echo "✅ 构建完成: $VSIX_FILE"
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: vscode-extension
-          path: ${{ steps.build_extension.outputs.vsix_file }}
-
   # 检测版本发布并自动发布到 VS Code Marketplace
   publish:
     runs-on: ubuntu-latest
-    needs: [test, build]
+    needs: [test]
     # 只在 main 分支且 commit 信息包含 "version:" 时运行
     if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'version:')
 
