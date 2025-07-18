@@ -1,69 +1,43 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "files.exclude": {
-        "out": false, // set this to true to hide the "out" folder with the compiled JS files
-        "dist": false // set this to true to hide the "dist" folder with the compiled JS files
-    },
-    "search.exclude": {
-        "out": true, // set this to false to include "out" folder in search results
-        "dist": true // set this to false to include "dist" folder in search results
-    },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off",
-    
-    // Flutter i18n VS Code Inline 插件配置示例
-    "flutter-i18n-vscode-inline.inlinePreview.enabled": true,
-    "flutter-i18n-vscode-inline.inlinePreview.showIcons": true,
-    "flutter-i18n-vscode-inline.inlinePreview.maxLength": 50,
-    "flutter-i18n-vscode-inline.inlinePreview.languages": ["en", "zh"],
-    "flutter-i18n-vscode-inline.inlinePreview.truncateText": true,
-    "flutter-i18n-vscode-inline.inlinePreview.showOnlyMissing": false,
-    
-    "flutter-i18n-vscode-inline.hoverPreview.enabled": true,
-    "flutter-i18n-vscode-inline.hoverPreview.showAllLanguages": true,
-    "flutter-i18n-vscode-inline.hoverPreview.maxLanguages": 5,
-    "flutter-i18n-vscode-inline.hoverPreview.showStatistics": true,
-    "flutter-i18n-vscode-inline.hoverPreview.showActions": true,
-    "flutter-i18n-vscode-inline.hoverPreview.maxLength": 100,
-    
-    "flutter-i18n-vscode-inline.diagnostics.enabled": true,
-    "flutter-i18n-vscode-inline.diagnostics.missingTranslations": "Warning",
-    "flutter-i18n-vscode-inline.diagnostics.partialTranslations": "Information",
-    "flutter-i18n-vscode-inline.diagnostics.invalidReferences": "Error",
-    "flutter-i18n-vscode-inline.diagnostics.parameterMismatch": "Warning",
-    "flutter-i18n-vscode-inline.diagnostics.showQuickFixes": true,
-    
-    "flutter-i18n-vscode-inline.autoComplete.enabled": true,
-    "flutter-i18n-vscode-inline.autoComplete.showDescriptions": true,
-    "flutter-i18n-vscode-inline.autoComplete.showPreview": true,
-    "flutter-i18n-vscode-inline.autoComplete.fuzzyMatch": true,
-    "flutter-i18n-vscode-inline.autoComplete.maxSuggestions": 20,
-    
-    "flutter-i18n-vscode-inline.editor.defaultLanguage": "en",
-    "flutter-i18n-vscode-inline.editor.showLineNumbers": true,
-    "flutter-i18n-vscode-inline.editor.enableSearch": true,
-    "flutter-i18n-vscode-inline.editor.enableFiltering": true,
-    "flutter-i18n-vscode-inline.editor.autoSave": true,
-    "flutter-i18n-vscode-inline.editor.validateOnSave": true,
-    
-    "flutter-i18n-vscode-inline.fileWatcher.enabled": true,
-    "flutter-i18n-vscode-inline.fileWatcher.watchArbFiles": true,
-    "flutter-i18n-vscode-inline.fileWatcher.watchConfigFiles": true,
-    "flutter-i18n-vscode-inline.fileWatcher.debounceDelay": 500,
-    
-    "flutter-i18n-vscode-inline.performance.enableCaching": true,
-    "flutter-i18n-vscode-inline.performance.cacheTimeout": 300000,
-    "flutter-i18n-vscode-inline.performance.maxCacheSize": 100,
-    "flutter-i18n-vscode-inline.performance.enableProfiling": false,
-    
-    "flutter-i18n-vscode-inline.debug.enabled": false,
-    "flutter-i18n-vscode-inline.debug.logLevel": "info",
-    "flutter-i18n-vscode-inline.debug.showPerformanceMetrics": false,
-    "flutter-i18n-vscode-inline.debug.enableVerboseLogging": false,
-    
-    "flutter-i18n-vscode-inline.advanced.customPatterns": [],
-    "flutter-i18n-vscode-inline.advanced.excludePatterns": ["**/.dart_tool/**", "**/build/**"],
-    "flutter-i18n-vscode-inline.advanced.maxFileSize": 1048576,
-    "flutter-i18n-vscode-inline.advanced.enableExperimentalFeatures": false,
-    "nuxt.isNuxtApp": false
+  // Editor formatting settings
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  // ESLint and TypeScript settings
+  "eslint.validate": ["typescript"],
+  "typescript.preferences.importModuleSpecifier": "relative",
+
+  // File and search exclusions
+  "files.exclude": {
+    "out": false, // set this to true to hide the "out" folder with the compiled JS files
+    "dist": false, // set this to true to hide the "dist" folder with the compiled JS files
+    "coverage": true,
+    "node_modules": true,
+    "*.vsix": true
+  },
+  "search.exclude": {
+    "out": true, // set this to false to include "out" folder in search results
+    "dist": true, // set this to false to include "dist" folder in search results
+    "coverage": true,
+    "node_modules": true,
+    "*.vsix": true
+  },
+
+  // TypeScript and package manager settings
+  "typescript.tsc.autoDetect": "on",
+  "npm.packageManager": "pnpm",
+
+  // Flutter i18n VS Code Inline 插件配置
+  "flutter-i18n-vscode-inline.enableCodeLens": true,
+  "flutter-i18n-vscode-inline.enableHover": true,
+  "flutter-i18n-vscode-inline.previewLanguage": "en",
+  "flutter-i18n-vscode-inline.showTranslationStats": false,
+  "flutter-i18n-vscode-inline.enableCustomPatterns": false,
+  "flutter-i18n-vscode-inline.showTranslationPreview": true,
+  "nuxt.isNuxtApp": false
 }

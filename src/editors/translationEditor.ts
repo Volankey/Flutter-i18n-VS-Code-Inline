@@ -12,7 +12,7 @@ import { TranslationEditRequest, TranslationEditResult, ArbEntry } from '../type
 export class TranslationEditorProvider implements vscode.CustomTextEditorProvider {
   private arbManager = getArbManager();
   private projectDetector = getProjectDetector();
-  
+
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new TranslationEditorProvider(context);
     const providerRegistration = vscode.window.registerCustomEditorProvider(
@@ -114,28 +114,28 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
       if (!projectConfig) {
         webviewPanel.webview.postMessage({
           type: 'error',
-          message: 'No Flutter project configuration found'
+          message: 'No Flutter project configuration found',
         });
         return;
       }
 
       // 获取所有翻译数据
       const translationData = this.getTranslationData();
-      
+
       webviewPanel.webview.postMessage({
         type: 'updateData',
         data: {
           translations: translationData,
           locales: Array.from(this.arbManager.getArbFiles().keys()),
           defaultLocale: projectConfig.defaultLocale,
-          projectConfig
-        }
+          projectConfig,
+        },
       });
     } catch (error) {
       console.error('Error updating webview:', error);
       webviewPanel.webview.postMessage({
         type: 'error',
-        message: `Error loading translations: ${(error as Error).message}`
+        message: `Error loading translations: ${(error as Error).message}`,
       });
     }
   }
@@ -153,11 +153,11 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
         key,
         values: {},
         metadata: {},
-        status: 'complete'
+        status: 'complete',
       };
 
       let completedCount = 0;
-      
+
       for (const locale of locales) {
         const entry = this.arbManager.getTranslation(key, locale);
         if (entry) {
@@ -190,18 +190,14 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
   ): Promise<void> {
     try {
       await this.arbManager.setTranslation(data.key, data.locale, data.value, data.description);
-      
+
       // 保存文件
       await this.arbManager.saveArbFileByLocale(data.locale);
-      
-      vscode.window.showInformationMessage(
-        `Translation updated: ${data.key} (${data.locale})`
-      );
+
+      vscode.window.showInformationMessage(`Translation updated: ${data.key} (${data.locale})`);
     } catch (error) {
       console.error('Error updating translation:', error);
-      vscode.window.showErrorMessage(
-        `Failed to update translation: ${(error as Error).message}`
-      );
+      vscode.window.showErrorMessage(`Failed to update translation: ${(error as Error).message}`);
     }
   }
 
@@ -218,21 +214,17 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
           await this.arbManager.setTranslation(data.key, locale, value, data.description);
         }
       }
-      
+
       // 保存所有修改的文件
       const locales = Object.keys(data.values).filter(locale => data.values[locale].trim());
       for (const locale of locales) {
         await this.arbManager.saveArbFileByLocale(locale);
       }
-      
-      vscode.window.showInformationMessage(
-        `Translation created: ${data.key}`
-      );
+
+      vscode.window.showInformationMessage(`Translation created: ${data.key}`);
     } catch (error) {
       console.error('Error creating translation:', error);
-      vscode.window.showErrorMessage(
-        `Failed to create translation: ${(error as Error).message}`
-      );
+      vscode.window.showErrorMessage(`Failed to create translation: ${(error as Error).message}`);
     }
   }
 
@@ -245,24 +237,20 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
   ): Promise<void> {
     try {
       const locales = Array.from(this.arbManager.getArbFiles().keys());
-      
+
       for (const locale of locales) {
         await this.arbManager.deleteTranslation(locale, data.key);
       }
-      
+
       // 保存所有文件
       for (const locale of locales) {
         await this.arbManager.saveArbFileByLocale(locale);
       }
-      
-      vscode.window.showInformationMessage(
-        `Translation deleted: ${data.key}`
-      );
+
+      vscode.window.showInformationMessage(`Translation deleted: ${data.key}`);
     } catch (error) {
       console.error('Error deleting translation:', error);
-      vscode.window.showErrorMessage(
-        `Failed to delete translation: ${(error as Error).message}`
-      );
+      vscode.window.showErrorMessage(`Failed to delete translation: ${(error as Error).message}`);
     }
   }
 
@@ -274,10 +262,10 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
       const uri = await vscode.window.showSaveDialog({
         defaultUri: vscode.Uri.file(`translations.${data.format}`),
         filters: {
-          'JSON': ['json'],
-          'CSV': ['csv'],
-          'Excel': ['xlsx']
-        }
+          JSON: ['json'],
+          CSV: ['csv'],
+          Excel: ['xlsx'],
+        },
       });
 
       if (!uri) {
@@ -292,14 +280,10 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
         await vscode.workspace.fs.writeFile(uri, Buffer.from(jsonContent, 'utf8'));
       }
 
-      vscode.window.showInformationMessage(
-        `Translations exported to ${uri.fsPath}`
-      );
+      vscode.window.showInformationMessage(`Translations exported to ${uri.fsPath}`);
     } catch (error) {
       console.error('Error exporting translations:', error);
-      vscode.window.showErrorMessage(
-        `Failed to export translations: ${(error as Error).message}`
-      );
+      vscode.window.showErrorMessage(`Failed to export translations: ${(error as Error).message}`);
     }
   }
 
@@ -315,10 +299,10 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
         canSelectFiles: true,
         canSelectMany: false,
         filters: {
-          'JSON': ['json'],
-          'CSV': ['csv'],
-          'Excel': ['xlsx']
-        }
+          JSON: ['json'],
+          CSV: ['csv'],
+          Excel: ['xlsx'],
+        },
       });
 
       if (!uris || uris.length === 0) {
@@ -327,12 +311,12 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
 
       const uri = uris[0];
       const content = await vscode.workspace.fs.readFile(uri);
-      
+
       // 这里可以实现不同格式的导入逻辑
       // 目前简单实现 JSON 导入
       if (data.format === 'json') {
         const importedData = JSON.parse(content.toString());
-        
+
         for (const [key, translationData] of Object.entries(importedData as any)) {
           const data = translationData as any;
           for (const [locale, value] of Object.entries(data.values as any)) {
@@ -341,7 +325,7 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
             }
           }
         }
-        
+
         // 保存所有文件
         const locales = Array.from(this.arbManager.getArbFiles().keys());
         for (const locale of locales) {
@@ -349,14 +333,10 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
         }
       }
 
-      vscode.window.showInformationMessage(
-        `Translations imported from ${uri.fsPath}`
-      );
+      vscode.window.showInformationMessage(`Translations imported from ${uri.fsPath}`);
     } catch (error) {
       console.error('Error importing translations:', error);
-      vscode.window.showErrorMessage(
-        `Failed to import translations: ${(error as Error).message}`
-      );
+      vscode.window.showErrorMessage(`Failed to import translations: ${(error as Error).message}`);
     }
   }
 
@@ -366,16 +346,16 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
   private async handleValidateTranslations(webviewPanel: vscode.WebviewPanel): Promise<void> {
     try {
       const validationResults = this.validateAllTranslations();
-      
+
       webviewPanel.webview.postMessage({
         type: 'validationResults',
-        data: validationResults
+        data: validationResults,
       });
     } catch (error) {
       console.error('Error validating translations:', error);
       webviewPanel.webview.postMessage({
         type: 'error',
-        message: `Validation failed: ${(error as Error).message}`
+        message: `Validation failed: ${(error as Error).message}`,
       });
     }
   }
@@ -390,7 +370,7 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
 
     for (const key of allKeys) {
       const translations = this.arbManager.getAllTranslations(key);
-      
+
       // 检查缺失翻译
       const missingLocales = locales.filter(locale => !translations.has(locale));
       if (missingLocales.length > 0) {
@@ -398,10 +378,10 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
           type: 'missing',
           key,
           locales: missingLocales,
-          message: `Missing translations in: ${missingLocales.join(', ')}`
+          message: `Missing translations in: ${missingLocales.join(', ')}`,
         });
       }
-      
+
       // 检查空翻译
       for (const [locale, translation] of translations) {
         if (!translation.trim()) {
@@ -409,11 +389,11 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
             type: 'empty',
             key,
             locale,
-            message: `Empty translation for ${locale}`
+            message: `Empty translation for ${locale}`,
           });
         }
       }
-      
+
       // 检查参数一致性
       const parameterIssues = this.validateParameters(key, translations);
       issues.push(...parameterIssues);
@@ -422,7 +402,7 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
     return {
       totalKeys: allKeys.length,
       totalIssues: issues.length,
-      issues
+      issues,
     };
   }
 
@@ -432,50 +412,50 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
   private validateParameters(key: string, translations: Map<string, string>): any[] {
     const issues: any[] = [];
     const parameterPattern = /\{([^}]+)\}/g;
-    
+
     // 获取所有翻译中的参数
     const allParameters = new Set<string>();
     const localeParameters = new Map<string, Set<string>>();
-    
+
     for (const [locale, translation] of translations) {
       const parameters = new Set<string>();
       let match;
-      
+
       while ((match = parameterPattern.exec(translation)) !== null) {
         const param = match[1];
         parameters.add(param);
         allParameters.add(param);
       }
-      
+
       localeParameters.set(locale, parameters);
     }
-    
+
     // 检查参数一致性
     for (const [locale, parameters] of localeParameters) {
       const missingParams = Array.from(allParameters).filter(p => !parameters.has(p));
       const extraParams = Array.from(parameters).filter(p => !allParameters.has(p));
-      
+
       if (missingParams.length > 0) {
         issues.push({
           type: 'missing-parameters',
           key,
           locale,
           parameters: missingParams,
-          message: `Missing parameters in ${locale}: ${missingParams.join(', ')}`
+          message: `Missing parameters in ${locale}: ${missingParams.join(', ')}`,
         });
       }
-      
+
       if (extraParams.length > 0) {
         issues.push({
           type: 'extra-parameters',
           key,
           locale,
           parameters: extraParams,
-          message: `Extra parameters in ${locale}: ${extraParams.join(', ')}`
+          message: `Extra parameters in ${locale}: ${extraParams.join(', ')}`,
         });
       }
     }
-    
+
     return issues;
   }
 
@@ -598,11 +578,14 @@ export class TranslationEditorProvider implements vscode.CustomTextEditorProvide
 export class QuickTranslationEditor {
   private arbManager = getArbManager();
   private projectDetector = getProjectDetector();
-  
+
   /**
    * 显示快速编辑对话框
    */
-  public async showQuickEdit(key: string, range?: vscode.Range): Promise<TranslationEditResult | null> {
+  public async showQuickEdit(
+    key: string,
+    range?: vscode.Range
+  ): Promise<TranslationEditResult | null> {
     const projectConfig = this.projectDetector.getProjectConfig();
     if (!projectConfig) {
       vscode.window.showErrorMessage('No Flutter project configuration found');
@@ -611,43 +594,38 @@ export class QuickTranslationEditor {
 
     const locales = Array.from(this.arbManager.getArbFiles().keys());
     const currentTranslations = this.arbManager.getAllTranslations(key);
-    
+
     // 创建输入框
     const items: vscode.QuickPickItem[] = [];
-    
+
     for (const locale of locales) {
       const currentValue = currentTranslations.get(locale) || '';
       const status = currentValue ? '✅' : '❌';
-      
+
       items.push({
         label: `${status} ${locale}`,
         description: currentValue || 'No translation',
-        detail: this.getLocaleName(locale)
+        detail: this.getLocaleName(locale),
       });
     }
-    
+
     // 添加操作项
-    items.push(
-      { label: '$(plus) Add New Translation', description: 'Create translation for new locale' },
-      { label: '$(edit) Edit All Translations', description: 'Open full translation editor' },
-      { label: '$(trash) Delete Translation Key', description: 'Remove this translation key' }
-    );
-    
+    items.push({
+      label: '$(trash) Delete Translation Key',
+      description: 'Remove this translation key',
+    });
+
     const selected = await vscode.window.showQuickPick(items, {
       placeHolder: `Edit translations for: ${key}`,
-      matchOnDescription: true
+      matchOnDescription: true,
     });
-    
+
     if (!selected) {
       return null;
     }
-    
+
     // 处理选择
-    if (selected.label.includes('Add New Translation')) {
-      return this.handleAddNewTranslation(key);
-    } else if (selected.label.includes('Edit All Translations')) {
-      return this.handleEditAllTranslations(key);
-    } else if (selected.label.includes('Delete Translation Key')) {
+    if (selected.label.includes('Delete Translation Key')) {
       return this.handleDeleteTranslationKey(key);
     } else {
       // 编辑特定语言的翻译
@@ -655,47 +633,7 @@ export class QuickTranslationEditor {
       return this.handleEditSingleTranslation(key, locale);
     }
   }
-  
-  /**
-   * 处理添加新翻译
-   */
-  private async handleAddNewTranslation(key: string): Promise<TranslationEditResult | null> {
-    const locale = await vscode.window.showInputBox({
-      prompt: 'Enter locale code (e.g., en, zh, fr)',
-      validateInput: (value) => {
-        if (!value || !value.trim()) {
-          return 'Locale code is required';
-        }
-        if (this.arbManager.getArbFiles().has(value)) {
-          return 'Locale already exists';
-        }
-        return null;
-      }
-    });
-    
-    if (!locale) {
-      return null;
-    }
-    
-    return this.handleEditSingleTranslation(key, locale);
-  }
-  
-  /**
-   * 处理编辑所有翻译
-   */
-  private async handleEditAllTranslations(key: string): Promise<TranslationEditResult | null> {
-    // 打开完整的翻译编辑器
-    const uri = vscode.Uri.parse(`flutter-i18n-translation:${key}`);
-    await vscode.commands.executeCommand('vscode.openWith', uri, TranslationEditorProvider.viewType);
-    
-    return {
-      success: true,
-      key,
-      changes: new Map(),
-      updatedLocales: []
-    };
-  }
-  
+
   /**
    * 处理删除翻译键
    */
@@ -705,30 +643,30 @@ export class QuickTranslationEditor {
       'Delete',
       'Cancel'
     );
-    
+
     if (confirmation !== 'Delete') {
       return null;
     }
-    
+
     try {
       const locales = Array.from(this.arbManager.getArbFiles().keys());
-      
+
       for (const locale of locales) {
         await this.arbManager.deleteTranslation(locale, key);
       }
-      
+
       // 保存所有文件
       for (const locale of locales) {
         await this.arbManager.saveArbFileByLocale(locale);
       }
-      
+
       vscode.window.showInformationMessage(`Translation key '${key}' deleted successfully`);
-      
+
       return {
         success: true,
         key,
         changes: new Map(),
-        updatedLocales: locales
+        updatedLocales: locales,
       };
     } catch (error) {
       vscode.window.showErrorMessage(`Failed to delete translation: ${(error as Error).message}`);
@@ -737,45 +675,46 @@ export class QuickTranslationEditor {
         key,
         changes: new Map(),
         updatedLocales: [],
-        error: (error as Error).message
+        error: (error as Error).message,
       };
     }
   }
-  
+
   /**
    * 处理编辑单个翻译
    */
-  private async handleEditSingleTranslation(key: string, locale: string): Promise<TranslationEditResult | null> {
+  private async handleEditSingleTranslation(
+    key: string,
+    locale: string
+  ): Promise<TranslationEditResult | null> {
     const currentValue = this.arbManager.getAllTranslations(key).get(locale) || '';
-    
+
     const newValue = await vscode.window.showInputBox({
       prompt: `Edit translation for '${key}' in ${locale}`,
       value: currentValue,
-      validateInput: (value) => {
+      validateInput: value => {
         if (!value || !value.trim()) {
           return 'Translation cannot be empty';
         }
         return null;
-      }
+      },
     });
-    
+
     if (newValue === undefined) {
       return null;
     }
-    
+
     try {
       await this.arbManager.setTranslation(key, locale, newValue);
       await this.arbManager.saveArbFileByLocale(locale);
-      
-      vscode.window.showInformationMessage(
-        `Translation updated: ${key} (${locale})`
-      );
-      
+
+      vscode.window.showInformationMessage(`Translation updated: ${key} (${locale})`);
+
       return {
         success: true,
         key,
         changes: new Map([[locale, newValue]]),
-        updatedLocales: [locale]
+        updatedLocales: [locale],
       };
     } catch (error) {
       vscode.window.showErrorMessage(`Failed to update translation: ${(error as Error).message}`);
@@ -784,31 +723,31 @@ export class QuickTranslationEditor {
         key,
         changes: new Map(),
         updatedLocales: [],
-        error: (error as Error).message
+        error: (error as Error).message,
       };
     }
   }
-  
+
   /**
    * 获取语言名称
    */
   private getLocaleName(locale: string): string {
     const nameMap: { [key: string]: string } = {
-      'en': 'English',
-      'zh': 'Chinese',
-      'zh_CN': 'Chinese (Simplified)',
-      'zh_TW': 'Chinese (Traditional)',
-      'es': 'Spanish',
-      'fr': 'French',
-      'de': 'German',
-      'ja': 'Japanese',
-      'ko': 'Korean',
-      'it': 'Italian',
-      'pt': 'Portuguese',
-      'ru': 'Russian',
-      'ar': 'Arabic'
+      en: 'English',
+      zh: 'Chinese',
+      zh_CN: 'Chinese (Simplified)',
+      zh_TW: 'Chinese (Traditional)',
+      es: 'Spanish',
+      fr: 'French',
+      de: 'German',
+      ja: 'Japanese',
+      ko: 'Korean',
+      it: 'Italian',
+      pt: 'Portuguese',
+      ru: 'Russian',
+      ar: 'Arabic',
     };
-    
+
     return nameMap[locale] || locale.toUpperCase();
   }
 }

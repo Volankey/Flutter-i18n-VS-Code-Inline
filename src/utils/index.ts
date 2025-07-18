@@ -3,10 +3,10 @@
  * 提供常用的辅助函数和实用工具
  */
 
-import * as vscode from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
 import { promisify } from 'util';
+import * as vscode from 'vscode';
 
 // 异步文件操作
 export const readFile = promisify(fs.readFile);
@@ -80,7 +80,7 @@ export class FileUtils {
   /**
    * 写入JSON文件
    */
-  static async writeJson(filePath: string, data: any, indent: number = 2): Promise<void> {
+  static async writeJson(filePath: string, data: any, indent = 2): Promise<void> {
     const content = JSON.stringify(data, null, indent);
     await FileUtils.ensureDir(path.dirname(filePath));
     await writeFile(filePath, content, 'utf8');
@@ -117,24 +117,20 @@ export class FileUtils {
   /**
    * 查找文件
    */
-  static async findFiles(
-    directory: string,
-    pattern: RegExp,
-    maxDepth: number = 10
-  ): Promise<string[]> {
+  static async findFiles(directory: string, pattern: RegExp, maxDepth = 10): Promise<string[]> {
     const results: string[] = [];
-    
+
     async function search(dir: string, depth: number): Promise<void> {
       if (depth > maxDepth) {
         return;
       }
-      
+
       try {
         const entries = await readdir(dir, { withFileTypes: true });
-        
+
         for (const entry of entries) {
           const fullPath = path.join(dir, entry.name);
-          
+
           if (entry.isDirectory()) {
             await search(fullPath, depth + 1);
           } else if (entry.isFile() && pattern.test(entry.name)) {
@@ -145,7 +141,7 @@ export class FileUtils {
         // 忽略无法访问的目录
       }
     }
-    
+
     await search(directory, 0);
     return results;
   }
@@ -204,7 +200,7 @@ export class StringUtils {
   /**
    * 截断字符串
    */
-  static truncate(str: string, maxLength: number, suffix: string = '...'): string {
+  static truncate(str: string, maxLength: number, suffix = '...'): string {
     if (str.length <= maxLength) {
       return str;
     }
@@ -219,8 +215,12 @@ export class StringUtils {
     const len1 = str1.length;
     const len2 = str2.length;
 
-    if (len1 === 0) return len2;
-    if (len2 === 0) return len1;
+    if (len1 === 0) {
+      return len2;
+    }
+    if (len2 === 0) {
+      return len1;
+    }
 
     // 初始化矩阵
     for (let i = 0; i <= len1; i++) {
@@ -235,8 +235,8 @@ export class StringUtils {
       for (let j = 1; j <= len2; j++) {
         const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
         matrix[i][j] = Math.min(
-          matrix[i - 1][j] + 1,     // 删除
-          matrix[i][j - 1] + 1,     // 插入
+          matrix[i - 1][j] + 1, // 删除
+          matrix[i][j - 1] + 1, // 插入
           matrix[i - 1][j - 1] + cost // 替换
         );
       }
@@ -257,7 +257,7 @@ export class StringUtils {
   /**
    * 生成随机字符串
    */
-  static randomString(length: number = 8): string {
+  static randomString(length = 8): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
@@ -283,7 +283,7 @@ export class StringUtils {
       .trim()
       .split(/\s+/)
       .filter(word => word.length > 0)
-      .map((word, index) => index === 0 ? word : StringUtils.capitalize(word))
+      .map((word, index) => (index === 0 ? word : StringUtils.capitalize(word)))
       .join('');
   }
 }
@@ -306,14 +306,17 @@ export class ArrayUtils {
     array: T[],
     keyFn: (item: T) => K
   ): Record<K, T[]> {
-    return array.reduce((groups, item) => {
-      const key = keyFn(item);
-      if (!groups[key]) {
-        groups[key] = [];
-      }
-      groups[key].push(item);
-      return groups;
-    }, {} as Record<K, T[]>);
+    return array.reduce(
+      (groups, item) => {
+        const key = keyFn(item);
+        if (!groups[key]) {
+          groups[key] = [];
+        }
+        groups[key].push(item);
+        return groups;
+      },
+      {} as Record<K, T[]>
+    );
   }
 
   /**
@@ -353,16 +356,17 @@ export class ArrayUtils {
   /**
    * 排序（支持多个键）
    */
-  static sortBy<T>(
-    array: T[],
-    ...keyFns: Array<(item: T) => any>
-  ): T[] {
+  static sortBy<T>(array: T[], ...keyFns: Array<(item: T) => any>): T[] {
     return [...array].sort((a, b) => {
       for (const keyFn of keyFns) {
         const aVal = keyFn(a);
         const bVal = keyFn(b);
-        if (aVal < bVal) return -1;
-        if (aVal > bVal) return 1;
+        if (aVal < bVal) {
+          return -1;
+        }
+        if (aVal > bVal) {
+          return 1;
+        }
       }
       return 0;
     });
@@ -380,15 +384,15 @@ export class ObjectUtils {
     if (obj === null || typeof obj !== 'object') {
       return obj;
     }
-    
+
     if (obj instanceof Date) {
       return new Date(obj.getTime()) as any;
     }
-    
+
     if (obj instanceof Array) {
       return obj.map(item => ObjectUtils.deepClone(item)) as any;
     }
-    
+
     if (typeof obj === 'object') {
       const cloned = {} as any;
       for (const key in obj) {
@@ -398,7 +402,7 @@ export class ObjectUtils {
       }
       return cloned;
     }
-    
+
     return obj;
   }
 
@@ -406,9 +410,11 @@ export class ObjectUtils {
    * 深度合并
    */
   static deepMerge<T extends object>(target: T, ...sources: Partial<T>[]): T {
-    if (!sources.length) return target;
+    if (!sources.length) {
+      return target;
+    }
     const source = sources.shift();
-    
+
     if (ObjectUtils.isObject(target) && ObjectUtils.isObject(source)) {
       for (const key in source) {
         const sourceValue = source[key];
@@ -420,7 +426,7 @@ export class ObjectUtils {
         }
       }
     }
-    
+
     return ObjectUtils.deepMerge(target, ...sources);
   }
 
@@ -437,14 +443,14 @@ export class ObjectUtils {
   static get(obj: any, path: string, defaultValue?: any): any {
     const keys = path.split('.');
     let result = obj;
-    
+
     for (const key of keys) {
-      if (result == null || typeof result !== 'object') {
+      if (result === null || result === undefined || typeof result !== 'object') {
         return defaultValue;
       }
       result = result[key];
     }
-    
+
     return result !== undefined ? result : defaultValue;
   }
 
@@ -454,7 +460,7 @@ export class ObjectUtils {
   static set(obj: any, path: string, value: any): void {
     const keys = path.split('.');
     let current = obj;
-    
+
     for (let i = 0; i < keys.length - 1; i++) {
       const key = keys[i];
       if (!(key in current) || !ObjectUtils.isObject(current[key])) {
@@ -462,7 +468,7 @@ export class ObjectUtils {
       }
       current = current[key];
     }
-    
+
     current[keys[keys.length - 1]] = value;
   }
 
@@ -472,7 +478,7 @@ export class ObjectUtils {
   static unset(obj: any, path: string): boolean {
     const keys = path.split('.');
     let current = obj;
-    
+
     for (let i = 0; i < keys.length - 1; i++) {
       const key = keys[i];
       if (!(key in current) || !ObjectUtils.isObject(current[key])) {
@@ -480,26 +486,26 @@ export class ObjectUtils {
       }
       current = current[key];
     }
-    
+
     const lastKey = keys[keys.length - 1];
     if (lastKey in current) {
       delete current[lastKey];
       return true;
     }
-    
+
     return false;
   }
 
   /**
    * 扁平化对象
    */
-  static flatten(obj: any, prefix: string = '', separator: string = '.'): Record<string, any> {
+  static flatten(obj: any, prefix = '', separator = '.'): Record<string, any> {
     const result: Record<string, any> = {};
-    
+
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         const newKey = prefix ? `${prefix}${separator}${key}` : key;
-        
+
         if (ObjectUtils.isObject(obj[key])) {
           Object.assign(result, ObjectUtils.flatten(obj[key], newKey, separator));
         } else {
@@ -507,7 +513,7 @@ export class ObjectUtils {
         }
       }
     }
-    
+
     return result;
   }
 }
@@ -626,11 +632,7 @@ export class VSCodeUtils {
   /**
    * 跳转到文件中的指定位置
    */
-  static async goToPosition(
-    filePath: string,
-    line: number,
-    character: number = 0
-  ): Promise<void> {
+  static async goToPosition(filePath: string, line: number, character = 0): Promise<void> {
     const editor = await VSCodeUtils.openFile(filePath);
     if (editor) {
       const position = new vscode.Position(line, character);
@@ -661,7 +663,7 @@ export class PerformanceUtils {
     if (startTime === undefined) {
       throw new Error(`Timer '${name}' was not started`);
     }
-    
+
     const duration = Date.now() - startTime;
     PerformanceUtils.timers.delete(name);
     return duration;
@@ -688,10 +690,7 @@ export class PerformanceUtils {
   /**
    * 测量同步函数执行时间
    */
-  static measure<T>(
-    name: string,
-    fn: () => T
-  ): { result: T; duration: number } {
+  static measure<T>(name: string, fn: () => T): { result: T; duration: number } {
     PerformanceUtils.startTimer(name);
     try {
       const result = fn();
@@ -711,7 +710,7 @@ export class PerformanceUtils {
     wait: number
   ): (...args: Parameters<T>) => void {
     let timeout: NodeJS.Timeout;
-    
+
     return (...args: Parameters<T>) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(null, args), wait);
@@ -726,12 +725,12 @@ export class PerformanceUtils {
     wait: number
   ): (...args: Parameters<T>) => void {
     let inThrottle: boolean;
-    
+
     return (...args: Parameters<T>) => {
       if (!inThrottle) {
         func.apply(null, args);
         inThrottle = true;
-        setTimeout(() => inThrottle = false, wait);
+        setTimeout(() => (inThrottle = false), wait);
       }
     };
   }
@@ -746,32 +745,32 @@ export class ValidationUtils {
    */
   static validateArbFormat(content: any): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     if (typeof content !== 'object' || content === null) {
       errors.push('ARB content must be an object');
       return { valid: false, errors };
     }
-    
+
     // 检查必需的元数据
     if (!content['@@locale']) {
       errors.push('Missing required @@locale metadata');
     }
-    
+
     // 验证键名格式
     for (const key in content) {
       if (key.startsWith('@')) {
         continue; // 跳过元数据
       }
-      
+
       if (!StringUtils.isValidKey(key)) {
         errors.push(`Invalid key format: ${key}`);
       }
-      
+
       if (typeof content[key] !== 'string') {
         errors.push(`Value for key '${key}' must be a string`);
       }
     }
-    
+
     return { valid: errors.length === 0, errors };
   }
 
@@ -791,25 +790,25 @@ export class ValidationUtils {
     expectedParams: string[]
   ): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     // 提取文本中的参数
     const paramMatches = text.match(/\{([^}]+)\}/g) || [];
     const actualParams = paramMatches.map(match => match.slice(1, -1));
-    
+
     // 检查缺失的参数
     for (const param of expectedParams) {
       if (!actualParams.includes(param)) {
         errors.push(`Missing parameter: {${param}}`);
       }
     }
-    
+
     // 检查多余的参数
     for (const param of actualParams) {
       if (!expectedParams.includes(param)) {
         errors.push(`Unexpected parameter: {${param}}`);
       }
     }
-    
+
     return { valid: errors.length === 0, errors };
   }
 }
@@ -836,7 +835,7 @@ export class LogUtils {
   static info(message: string, ...args: any[]): void {
     const timestamp = new Date().toISOString();
     const formattedMessage = `[${timestamp}] INFO: ${message}`;
-    
+
     console.log(formattedMessage, ...args);
     LogUtils.getOutputChannel().appendLine(formattedMessage);
   }
@@ -847,7 +846,7 @@ export class LogUtils {
   static warn(message: string, ...args: any[]): void {
     const timestamp = new Date().toISOString();
     const formattedMessage = `[${timestamp}] WARN: ${message}`;
-    
+
     console.warn(formattedMessage, ...args);
     LogUtils.getOutputChannel().appendLine(formattedMessage);
   }
@@ -858,10 +857,10 @@ export class LogUtils {
   static error(message: string, error?: Error, ...args: any[]): void {
     const timestamp = new Date().toISOString();
     const formattedMessage = `[${timestamp}] ERROR: ${message}`;
-    
+
     console.error(formattedMessage, error, ...args);
     LogUtils.getOutputChannel().appendLine(formattedMessage);
-    
+
     if (error) {
       LogUtils.getOutputChannel().appendLine(`Stack trace: ${error.stack}`);
     }
@@ -873,7 +872,7 @@ export class LogUtils {
   static debug(message: string, ...args: any[]): void {
     const timestamp = new Date().toISOString();
     const formattedMessage = `[${timestamp}] DEBUG: ${message}`;
-    
+
     console.debug(formattedMessage, ...args);
     LogUtils.getOutputChannel().appendLine(formattedMessage);
   }
@@ -905,14 +904,14 @@ export class LogUtils {
 
 // 导出常用的工具函数
 export {
-  FileUtils as File,
-  StringUtils as String,
   ArrayUtils as Array,
+  FileUtils as File,
+  LogUtils as Log,
   ObjectUtils as Object,
-  VSCodeUtils as VSCode,
   PerformanceUtils as Performance,
+  StringUtils as String,
   ValidationUtils as Validation,
-  LogUtils as Log
+  VSCodeUtils as VSCode,
 };
 
 // 导出类型守卫
@@ -924,7 +923,8 @@ export const isObject = (value: any): value is object => ObjectUtils.isObject(va
 export const isFunction = (value: any): value is Function => typeof value === 'function';
 export const isUndefined = (value: any): value is undefined => value === undefined;
 export const isNull = (value: any): value is null => value === null;
-export const isNullOrUndefined = (value: any): value is null | undefined => value == null;
+export const isNullOrUndefined = (value: any): value is null | undefined =>
+  value === null || value === undefined;
 
 // 导出常用常量
 export const CONSTANTS = {
@@ -938,6 +938,6 @@ export const CONSTANTS = {
     S_OF_CONTEXT: /S\.of\(context\)\.([a-zA-Z_][a-zA-Z0-9_]*)/g,
     CONTEXT_L10N: /context\.l10n\.([a-zA-Z_][a-zA-Z0-9_]*)/g,
     APP_LOCALIZATIONS: /AppLocalizations\.of\(context\)!?\.([a-zA-Z_][a-zA-Z0-9_]*)/g,
-    INTL_MESSAGE: /Intl\.message\s*\([^)]*name\s*:\s*['"]([^'"]+)['"]/g
-  }
+    INTL_MESSAGE: /Intl\.message\s*\([^)]*name\s*:\s*['"]([^'"]+)['"]/g,
+  },
 };

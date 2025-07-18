@@ -1,12 +1,26 @@
-# Flutter i18n VS Code Inline
+# 🚀 Flutter i18n Inline Editor - Translation Preview & Management
 
-[![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/yourpublisher.flutter-i18n-vscode-inline?style=flat-square&label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/yourpublisher.flutter-i18n-vscode-inline?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)
-[![Ratings](https://img.shields.io/visual-studio-marketplace/r/yourpublisher.flutter-i18n-vscode-inline?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)
+[![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/volankey.flutter-i18n-vscode-inline?style=flat-square&label=VS%20Marketplace&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/volankey.flutter-i18n-vscode-inline?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
+[![Ratings](https://img.shields.io/visual-studio-marketplace/r/volankey.flutter-i18n-vscode-inline?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/volankey.flutter-i18n-vscode-inline?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
+[![License](https://img.shields.io/github/license/volankey/flutter-i18n-vscode-inline?style=flat-square)](LICENSE)
 
-Empower your Flutter internationalization (i18n) and localization (l10n) workflow. Say goodbye to switching between `.dart` code and `.arb` files. **Now, preview, edit, and manage all translations directly in your code editor!**
+**The ultimate VS Code extension for Flutter developers working with internationalization (i18n) and localization (l10n).** Transform your translation workflow with inline previews, direct editing, and smart diagnostics - all without leaving your Dart code!
 
-> This VS Code extension is designed for Flutter developers seeking ultimate efficiency, optimizing the i18n development experience.
+> 🎯 **Perfect for Flutter teams** building multilingual apps with `.arb` files and Flutter's official i18n solution.
+
+## 🌟 Why Choose This Extension?
+
+**Before:** Switch between `.dart` → `app_en.arb` → `app_zh.arb` → back to `.dart` 😫  
+**After:** Edit all translations directly in your Dart code with visual previews! 🎉
+
+### 💡 **Boost Your Productivity by 3x**
+- ⚡ **Zero Context Switching** - Stay in your Dart files
+- 👀 **Visual Translation Preview** - See translations as you code
+- ✏️ **One-Click Editing** - Modify any language instantly
+- 🔍 **Smart Detection** - Automatic missing translation alerts
+- 🚀 **Team Collaboration** - Consistent workflow for all developers
 
 ---
 
@@ -38,7 +52,7 @@ Traditional Flutter internationalization workflows are cumbersome. You write a k
 3. Search for `Flutter i18n VS Code Inline`.
 4. Click **Install**.
 
-You can also [install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline).
+You can also [install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline).
 
 ## 📖 Usage Guide
 
@@ -80,6 +94,26 @@ You can also [install from the VS Code Marketplace](https://marketplace.visualst
 
 ## 🤝 Contributing
 
-Welcome contributions, bug reports, and feature requests! Please visit the issues page.
+We welcome contributions, bug reports, and feature requests! Please visit our [GitHub Issues](https://github.com/Volankey/Flutter-i18n-VS-Code-Inline/issues) page.
 
-Tags: Flutter, i18n, internationalization, l10n, localization, VS Code extension, Dart, .arb, productivity, dev tools, inline translation, edit translation
+### 🔗 Useful Links
+- [📖 Documentation](https://github.com/Volankey/Flutter-i18n-VS-Code-Inline#readme)
+- [🐛 Report Issues](https://github.com/Volankey/Flutter-i18n-VS-Code-Inline/issues)
+- [💡 Feature Requests](https://github.com/Volankey/Flutter-i18n-VS-Code-Inline/issues/new)
+- [⭐ Rate on Marketplace](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline&ssr=false#review-details)
+
+---
+
+## 🏷️ Keywords & Tags
+
+**Flutter Development:** `flutter` `dart` `mobile-development` `cross-platform` `app-development`  
+**Internationalization:** `i18n` `l10n` `internationalization` `localization` `translation` `multilingual` `locale` `language`  
+**VS Code:** `vscode-extension` `editor` `productivity` `developer-tools` `coding` `ide`  
+**Features:** `inline-preview` `codelens` `hover` `diagnostics` `arb-files` `workflow` `automation`  
+**Use Cases:** `flutter-i18n` `translation-management` `localization-workflow` `developer-productivity` `team-collaboration`
+
+**Perfect for:** Flutter developers, mobile app teams, internationalization specialists, localization managers, and anyone working with multilingual Flutter applications.
+
+---
+
+*Made with ❤️ for the Flutter community. Star ⭐ this project if it helps you build amazing multilingual apps!*

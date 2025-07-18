@@ -1,28 +1,44 @@
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import prettier from "eslint-plugin-prettier";
+import prettierConfig from "eslint-config-prettier";
 
-export default [{
+export default [
+  {
     files: ["**/*.ts"],
-}, {
+  },
+  {
     plugins: {
-        "@typescript-eslint": typescriptEslint,
+      "@typescript-eslint": typescriptEslint,
+      prettier: prettier,
     },
 
     languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 2022,
-        sourceType: "module",
+      parser: tsParser,
+      ecmaVersion: 2022,
+      sourceType: "module",
     },
 
     rules: {
-        "@typescript-eslint/naming-convention": ["warn", {
-            selector: "import",
-            format: ["camelCase", "PascalCase"],
-        }],
-
-        curly: "warn",
-        eqeqeq: "warn",
-        "no-throw-literal": "warn",
-        semi: "warn",
+      ...prettierConfig.rules,
+      "prettier/prettier": "error",
+      "@typescript-eslint/naming-convention": [
+        "warn",
+        {
+          selector: "import",
+          format: ["camelCase", "PascalCase"],
+        },
+      ],
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-inferrable-types": "warn",
+      curly: "warn",
+      eqeqeq: "warn",
+      "no-throw-literal": "warn",
+      "no-console": "warn",
+      "prefer-const": "warn",
+      "no-var": "warn",
     },
-}];
+  },
+];

@@ -5,3 +5,10 @@ node_modules
 *.vsix
 .trae/
 .cursor/
+.test-data/
+src/**/*.js
+src/**/*.js.map
+.nyc_output/
+coverage/
+
+

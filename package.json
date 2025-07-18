@@ -3,6 +3,27 @@
   "displayName": "Flutter i18n VsCode Inline",
   "description": "Supercharge your Flutter internationalization (i18n) and localization (l10n) workflow. Stop switching between `.dart` code and `.arb` files. **Preview, edit, and manage all your translations directly within your code editor!",
   "version": "0.0.1",
+  "publisher": "volankey",
+  "license": "MIT",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volankey/Flutter-i18n-VS-Code-Inline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/volankey/Flutter-i18n-VS-Code-Inline/issues"
+  },
+  "homepage": "https://github.com/volankey/Flutter-i18n-VS-Code-Inline#readme",
+  "keywords": [
+    "flutter",
+    "i18n",
+    "internationalization",
+    "localization",
+    "l10n",
+    "arb",
+    "dart",
+    "translation"
+  ],
   "engines": {
     "vscode": "^1.89.0"
   },
@@ -50,41 +71,41 @@
           "description": "Default language for translation preview"
         },
         "flutter-i18n-vscode-inline.showTranslationStats": {
-           "type": "boolean",
-           "default": false,
-           "description": "Show translation statistics in CodeLens"
-         },
-         "flutter-i18n-vscode-inline.customPatterns": {
-           "type": "object",
-           "default": {},
-           "description": "Custom regex patterns for i18n detection",
-           "properties": {
-             "generatedClass": {
-               "type": "string",
-               "description": "Pattern for S.of(context).keyName style (e.g., \"\\\\bS\\\\.of\\\\(\\\\s*context\\\\s*\\\\)\\\\.(\\\\w+)\")"
-             },
-             "contextL10n": {
-               "type": "string",
-               "description": "Pattern for context.l10n.keyName style"
-             },
-             "appLocalizations": {
-               "type": "string",
-               "description": "Pattern for AppLocalizations.of(context).keyName style"
-             },
-             "intlMessage": {
-               "type": "string",
-               "description": "Pattern for Intl.message style"
-             },
-             "variableDeclarations": {
-               "type": "array",
-               "items": {
-                 "type": "string"
-               },
-               "description": "Patterns for detecting i18n variable declarations"
-             }
-           }
-         },
-         "flutter-i18n-vscode-inline.enableCustomPatterns": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show translation statistics in CodeLens"
+        },
+        "flutter-i18n-vscode-inline.customPatterns": {
+          "type": "object",
+          "default": {},
+          "description": "Custom regex patterns for i18n detection",
+          "properties": {
+            "generatedClass": {
+              "type": "string",
+              "description": "Pattern for S.of(context).keyName style (e.g., \"\\\\bS\\\\.of\\\\(\\\\s*context\\\\s*\\\\)\\\\.(\\\\w+)\")"
+            },
+            "contextL10n": {
+              "type": "string",
+              "description": "Pattern for context.l10n.keyName style"
+            },
+            "appLocalizations": {
+              "type": "string",
+              "description": "Pattern for AppLocalizations.of(context).keyName style"
+            },
+            "intlMessage": {
+              "type": "string",
+              "description": "Pattern for Intl.message style"
+            },
+            "variableDeclarations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Patterns for detecting i18n variable declarations"
+            }
+          }
+        },
+        "flutter-i18n-vscode-inline.enableCustomPatterns": {
           "type": "boolean",
           "default": false,
           "description": "Enable custom regex patterns (when disabled, uses built-in patterns)"
@@ -94,14 +115,16 @@
           "default": true,
           "description": "Show highlighted translation preview at the top of hover content"
         }
-       }
-     },
-     "languages": [
-       {
-         "id": "dart",
-         "extensions": [".dart"]
-       }
-     ]
+      }
+    },
+    "languages": [
+      {
+        "id": "dart",
+        "extensions": [
+          ".dart"
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
@@ -114,20 +137,67 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src",
-    "test": "vscode-test"
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "lint:strict": "eslint \"src/**/*.ts\" --max-warnings 0",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "test": "node ./out/test/runTest.js",
+    "test:coverage": "c8 node ./out/test/runTest.js",
+    "test:watch": "pnpm run watch-tests",
+    "test:all": "pnpm run check-types && pnpm run lint:strict && pnpm run format:check && pnpm run test:coverage",
+    "clean": "rimraf out dist coverage .nyc_output *.vsix",
+    "clean:install": "pnpm run clean && rm -rf node_modules pnpm-lock.yaml && pnpm install",
+    "security:audit": "pnpm audit --audit-level moderate",
+    "deps:update": "pnpm update --latest",
+    "deps:check": "pnpm outdated",
+    "size:check": "node -e \"const fs=require('fs'); const stats=fs.statSync('dist/extension.js'); console.log('Bundle size:', Math.round(stats.size/1024) + 'KB'); if(stats.size > 500000) process.exit(1);\"",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "vsce:package": "vsce package --no-dependencies",
+    "vsce:publish": "vsce publish --no-dependencies",
+    "vsce:package:pre-release": "vsce package --pre-release --no-dependencies",
+    "vsce:publish:pre-release": "vsce publish --pre-release --no-dependencies",
+    "ci:local": "pnpm run test:all && pnpm run package && pnpm run size:check"
   },
   "devDependencies": {
-    "@types/vscode": "^1.89.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@types/glob": "^9.0.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.12.12",
+    "@types/sinon": "^17.0.4",
+    "@types/vscode": "^1.89.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "esbuild": "^0.25.3",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.8.3",
     "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.6.0",
+    "c8": "^10.1.3",
+    "esbuild": "^0.25.3",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "glob": "^11.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "mocha": "^11.7.1",
+    "npm-run-all": "^4.1.5",
+    "nyc": "^17.1.0",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
+    "sinon": "^21.0.0",
+    "source-map-support": "^0.5.21",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

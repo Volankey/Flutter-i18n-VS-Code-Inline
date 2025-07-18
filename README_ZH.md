@@ -3,9 +3,9 @@
 ```markdown
 # Flutter i18n VS Code Inline
 
-[![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/yourpublisher.flutter-i18n-vscode-inline?style=flat-square&label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/yourpublisher.flutter-i18n-vscode-inline?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)
-[![Ratings](https://img.shields.io/visual-studio-marketplace/r/yourpublisher.flutter-i18n-vscode-inline?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)
+[![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/volankey.flutter-i18n-vscode-inline?style=flat-square&label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/volankey.flutter-i18n-vscode-inline?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
+[![Ratings](https://img.shields.io/visual-studio-marketplace/r/volankey.flutter-i18n-vscode-inline?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)
 
 为你的 Flutter 国际化 (i18n) 和本地化 (l10n) 工作流强势赋能。告别在 `.dart` 代码和 `.arb` 文件之间频繁切换的日子。**现在，直接在你的代码编辑器中预览、编辑和管理所有翻译！**
 
@@ -41,7 +41,7 @@
 3. 搜索 `Flutter i18n VS Code Inline`。
 4. 点击 **安装**。
 
-你也可以 [从 VS Code 应用市场安装](https://marketplace.visualstudio.com/items?itemName=yourpublisher.flutter-i18n-vscode-inline)。
+你也可以 [从 VS Code 应用市场安装](https://marketplace.visualstudio.com/items?itemName=volankey.flutter-i18n-vscode-inline)。
 
 ## 📖 使用指南
 

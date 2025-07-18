@@ -10,9 +10,9 @@ export class EventManager {
   private static instance: EventManager;
   private listeners = new Map<PluginEventType, Set<EventListener<any>>>();
   private disposables: vscode.Disposable[] = [];
-  
+
   private constructor() {}
-  
+
   /**
    * 获取单例实例
    */
@@ -22,21 +22,18 @@ export class EventManager {
     }
     return EventManager.instance;
   }
-  
+
   /**
    * 注册事件监听器
    */
-  public on<T = any>(
-    eventType: PluginEventType,
-    listener: EventListener<T>
-  ): DisposableListener {
+  public on<T = any>(eventType: PluginEventType, listener: EventListener<T>): DisposableListener {
     if (!this.listeners.has(eventType)) {
       this.listeners.set(eventType, new Set());
     }
-    
+
     const listenersSet = this.listeners.get(eventType)!;
     listenersSet.add(listener);
-    
+
     // 返回可释放的监听器
     return {
       dispose: () => {
@@ -44,37 +41,31 @@ export class EventManager {
         if (listenersSet.size === 0) {
           this.listeners.delete(eventType);
         }
-      }
+      },
     };
   }
-  
+
   /**
    * 注册一次性事件监听器
    */
-  public once<T = any>(
-    eventType: PluginEventType,
-    listener: EventListener<T>
-  ): DisposableListener {
-    const disposable = this.on(eventType, (event) => {
+  public once<T = any>(eventType: PluginEventType, listener: EventListener<T>): DisposableListener {
+    const disposable = this.on(eventType, event => {
       disposable.dispose();
       listener(event);
     });
-    
+
     return disposable;
   }
-  
+
   /**
    * 移除事件监听器
    */
-  public off<T = any>(
-    eventType: PluginEventType,
-    listener?: EventListener<T>
-  ): void {
+  public off<T = any>(eventType: PluginEventType, listener?: EventListener<T>): void {
     const listenersSet = this.listeners.get(eventType);
     if (!listenersSet) {
       return;
     }
-    
+
     if (listener) {
       listenersSet.delete(listener);
       if (listenersSet.size === 0) {
@@ -85,7 +76,7 @@ export class EventManager {
       this.listeners.delete(eventType);
     }
   }
-  
+
   /**
    * 触发事件
    */
@@ -94,7 +85,7 @@ export class EventManager {
     if (!listenersSet) {
       return;
     }
-    
+
     // 异步执行所有监听器
     setImmediate(() => {
       for (const listener of listenersSet) {
@@ -106,7 +97,7 @@ export class EventManager {
       }
     });
   }
-  
+
   /**
    * 同步触发事件
    */
@@ -115,7 +106,7 @@ export class EventManager {
     if (!listenersSet) {
       return;
     }
-    
+
     for (const listener of listenersSet) {
       try {
         listener(event);
@@ -124,7 +115,7 @@ export class EventManager {
       }
     }
   }
-  
+
   /**
    * 等待特定事件
    */
@@ -135,7 +126,7 @@ export class EventManager {
   ): Promise<PluginEvent<T>> {
     return new Promise((resolve, reject) => {
       let timeoutId: NodeJS.Timeout | undefined;
-      
+
       const disposable = this.on(eventType, (event: PluginEvent<T>) => {
         if (!predicate || predicate(event)) {
           if (timeoutId) {
@@ -145,7 +136,7 @@ export class EventManager {
           resolve(event);
         }
       });
-      
+
       if (timeout) {
         timeoutId = setTimeout(() => {
           disposable.dispose();
@@ -154,7 +145,7 @@ export class EventManager {
       }
     });
   }
-  
+
   /**
    * 获取事件监听器数量
    */
@@ -163,34 +154,34 @@ export class EventManager {
       const listenersSet = this.listeners.get(eventType);
       return listenersSet ? listenersSet.size : 0;
     }
-    
+
     let total = 0;
     for (const listenersSet of this.listeners.values()) {
       total += listenersSet.size;
     }
     return total;
   }
-  
+
   /**
    * 获取所有事件类型
    */
   public getEventTypes(): PluginEventType[] {
     return Array.from(this.listeners.keys());
   }
-  
+
   /**
    * 清除所有监听器
    */
   public clear(): void {
     this.listeners.clear();
   }
-  
+
   /**
    * 释放资源
    */
   public dispose(): void {
     this.clear();
-    
+
     for (const disposable of this.disposables) {
       disposable.dispose();
     }
@@ -208,22 +199,25 @@ export class EventFactory {
       type: PluginEventType.PROJECT_CONFIG_CHANGED,
       data: config,
       timestamp: Date.now(),
-      source: 'ProjectDetector'
+      source: 'ProjectDetector',
     };
   }
-  
+
   /**
    * 创建ARB文件变更事件
    */
-  static createArbFileChanged(locale: string, filePath: string): PluginEvent<{locale: string, filePath: string}> {
+  static createArbFileChanged(
+    locale: string,
+    filePath: string
+  ): PluginEvent<{ locale: string; filePath: string }> {
     return {
       type: PluginEventType.ARB_FILE_CHANGED,
       data: { locale, filePath },
       timestamp: Date.now(),
-      source: 'ArbManager'
+      source: 'ArbManager',
     };
   }
-  
+
   /**
    * 创建翻译更新事件
    */
@@ -232,15 +226,15 @@ export class EventFactory {
     key: string,
     oldValue: string | undefined,
     newValue: string
-  ): PluginEvent<{locale: string, key: string, oldValue?: string, newValue: string}> {
+  ): PluginEvent<{ locale: string; key: string; oldValue?: string; newValue: string }> {
     return {
       type: PluginEventType.TRANSLATION_UPDATED,
       data: { locale, key, oldValue, newValue },
       timestamp: Date.now(),
-      source: 'ArbManager'
+      source: 'ArbManager',
     };
   }
-  
+
   /**
    * 创建翻译删除事件
    */
@@ -248,72 +242,72 @@ export class EventFactory {
     locale: string,
     key: string,
     oldValue: string
-  ): PluginEvent<{locale: string, key: string, oldValue: string}> {
+  ): PluginEvent<{ locale: string; key: string; oldValue: string }> {
     return {
       type: PluginEventType.TRANSLATION_DELETED,
       data: { locale, key, oldValue },
       timestamp: Date.now(),
-      source: 'ArbManager'
+      source: 'ArbManager',
     };
   }
-  
+
   /**
    * 创建翻译键创建事件
    */
   static createTranslationKeyCreated(
     key: string,
     translations: Map<string, string>
-  ): PluginEvent<{key: string, translations: Map<string, string>}> {
+  ): PluginEvent<{ key: string; translations: Map<string, string> }> {
     return {
       type: PluginEventType.TRANSLATION_KEY_CREATED,
       data: { key, translations },
       timestamp: Date.now(),
-      source: 'ArbManager'
+      source: 'ArbManager',
     };
   }
-  
+
   /**
    * 创建Dart文件解析事件
    */
   static createDartFileParsed(
     uri: string,
     references: any[]
-  ): PluginEvent<{uri: string, references: any[]}> {
+  ): PluginEvent<{ uri: string; references: any[] }> {
     return {
       type: PluginEventType.DART_FILE_PARSED,
       data: { uri, references },
       timestamp: Date.now(),
-      source: 'DartParser'
+      source: 'DartParser',
     };
   }
-  
+
   /**
    * 创建诊断更新事件
    */
   static createDiagnosticsUpdated(
     uri: string,
     diagnostics: any[]
-  ): PluginEvent<{uri: string, diagnostics: any[]}> {
+  ): PluginEvent<{ uri: string; diagnostics: any[] }> {
     return {
       type: PluginEventType.DIAGNOSTICS_UPDATED,
       data: { uri, diagnostics },
       timestamp: Date.now(),
-      source: 'DiagnosticProvider'
+      source: 'DiagnosticProvider',
     };
   }
-  
+
   /**
    * 创建缓存清除事件
    */
-  static createCacheCleared(keys?: string[]): PluginEvent<{keys?: string[]}> {
+  static createCacheCleared(keys?: string[]): PluginEvent<{ keys?: string[] }> {
     return {
       type: PluginEventType.CACHE_CLEARED,
       data: { keys },
       timestamp: Date.now(),
-      source: 'CacheManager'
+      source: 'CacheManager',
     };
   }
-  
+
   /**
    * 创建插件配置变更事件
    */
@@ -322,25 +316,25 @@ export class EventFactory {
       type: PluginEventType.PLUGIN_CONFIG_CHANGED,
       data: config,
       timestamp: Date.now(),
-      source: 'ConfigManager'
+      source: 'ConfigManager',
     };
   }
-  
+
   /**
    * 创建错误事件
    */
   static createError(
     error: Error,
     context?: string
-  ): PluginEvent<{error: Error, context?: string}> {
+  ): PluginEvent<{ error: Error; context?: string }> {
     return {
       type: PluginEventType.ERROR,
       data: { error, context },
       timestamp: Date.now(),
-      source: context || 'Unknown'
+      source: context || 'Unknown',
     };
   }
-  
+
   /**
    * 创建性能指标事件
    */
@@ -348,12 +342,12 @@ export class EventFactory {
     operation: string,
     duration: number,
     metadata?: any
-  ): PluginEvent<{operation: string, duration: number, metadata?: any}> {
+  ): PluginEvent<{ operation: string; duration: number; metadata?: any }> {
     return {
       type: PluginEventType.PERFORMANCE_METRIC,
       data: { operation, duration, metadata },
       timestamp: Date.now(),
-      source: 'PerformanceMonitor'
+      source: 'PerformanceMonitor',
     };
   }
 }
@@ -363,48 +357,51 @@ export class EventAggregator {
   private eventManager = getEventManager();
   private aggregatedEvents = new Map<string, any[]>();
   private timers = new Map<string, NodeJS.Timeout>();
-  
+
   /**
    * 聚合事件
    */
   public aggregate<T>(
     eventType: PluginEventType,
     aggregateKey: string,
-    delay: number = 1000
+    delay = 1000
   ): DisposableListener {
-    return this.eventManager.on<T>(eventType, (event) => {
+    return this.eventManager.on<T>(eventType, event => {
       // 添加到聚合列表
       if (!this.aggregatedEvents.has(aggregateKey)) {
         this.aggregatedEvents.set(aggregateKey, []);
       }
-      
+
       this.aggregatedEvents.get(aggregateKey)!.push(event);
-      
+
       // 重置定时器
       if (this.timers.has(aggregateKey)) {
         clearTimeout(this.timers.get(aggregateKey)!);
       }
-      
-      this.timers.set(aggregateKey, setTimeout(() => {
-        const events = this.aggregatedEvents.get(aggregateKey) || [];
-        if (events.length > 0) {
-          // 触发聚合事件
-          this.eventManager.emit({
-            type: `${eventType}_AGGREGATED` as PluginEventType,
-            data: events,
-            timestamp: Date.now(),
-            source: 'EventAggregator'
-          });
-          
-          // 清除聚合数据
-          this.aggregatedEvents.delete(aggregateKey);
-        }
-        
-        this.timers.delete(aggregateKey);
-      }, delay));
+
+      this.timers.set(
+        aggregateKey,
+        setTimeout(() => {
+          const events = this.aggregatedEvents.get(aggregateKey) || [];
+          if (events.length > 0) {
+            // 触发聚合事件
+            this.eventManager.emit({
+              type: `${eventType}_AGGREGATED` as PluginEventType,
+              data: events,
+              timestamp: Date.now(),
+              source: 'EventAggregator',
+            });
+
+            // 清除聚合数据
+            this.aggregatedEvents.delete(aggregateKey);
+          }
+
+          this.timers.delete(aggregateKey);
+        }, delay)
+      );
     });
   }
-  
+
   /**
    * 释放资源
    */
@@ -412,7 +409,7 @@ export class EventAggregator {
     for (const timer of this.timers.values()) {
       clearTimeout(timer);
     }
-    
+
     this.timers.clear();
     this.aggregatedEvents.clear();
   }
@@ -426,30 +423,30 @@ export type EventMiddleware<T = any> = (
 
 export class EventMiddlewareManager {
   private middlewares: EventMiddleware[] = [];
-  
+
   /**
    * 添加中间件
    */
   public use(middleware: EventMiddleware): void {
     this.middlewares.push(middleware);
   }
-  
+
   /**
    * 执行中间件链
    */
   public execute<T>(event: PluginEvent<T>, finalHandler: (event: PluginEvent<T>) => void): void {
     let index = 0;
-    
+
     const next = (event: PluginEvent<T>) => {
       if (index >= this.middlewares.length) {
         finalHandler(event);
         return;
       }
-      
+
       const middleware = this.middlewares[index++];
       middleware(event, next);
     };
-    
+
     next(event);
   }
 }
@@ -461,57 +458,59 @@ export const getEventManager = (): EventManager => EventManager.getInstance();
 export class CommonEventListeners {
   private eventManager = getEventManager();
   private disposables: DisposableListener[] = [];
-  
+
   /**
    * 监听所有ARB文件变更
    */
-  public onArbFileChanged(callback: (locale: string, filePath: string) => void): DisposableListener {
-    const disposable = this.eventManager.on(PluginEventType.ARB_FILE_CHANGED, (event) => {
+  public onArbFileChanged(
+    callback: (locale: string, filePath: string) => void
+  ): DisposableListener {
+    const disposable = this.eventManager.on(PluginEventType.ARB_FILE_CHANGED, event => {
       callback(event.data.locale, event.data.filePath);
     });
-    
+
     this.disposables.push(disposable);
     return disposable;
   }
-  
+
   /**
    * 监听翻译更新
    */
   public onTranslationUpdated(
     callback: (locale: string, key: string, oldValue: string | undefined, newValue: string) => void
   ): DisposableListener {
-    const disposable = this.eventManager.on(PluginEventType.TRANSLATION_UPDATED, (event) => {
+    const disposable = this.eventManager.on(PluginEventType.TRANSLATION_UPDATED, event => {
       callback(event.data.locale, event.data.key, event.data.oldValue, event.data.newValue);
     });
-    
+
     this.disposables.push(disposable);
     return disposable;
   }
-  
+
   /**
    * 监听项目配置变更
    */
   public onProjectConfigChanged(callback: (config: any) => void): DisposableListener {
-    const disposable = this.eventManager.on(PluginEventType.PROJECT_CONFIG_CHANGED, (event) => {
+    const disposable = this.eventManager.on(PluginEventType.PROJECT_CONFIG_CHANGED, event => {
       callback(event.data);
     });
-    
+
     this.disposables.push(disposable);
     return disposable;
   }
-  
+
   /**
    * 监听错误事件
    */
   public onError(callback: (error: Error, context?: string) => void): DisposableListener {
-    const disposable = this.eventManager.on(PluginEventType.ERROR, (event) => {
+    const disposable = this.eventManager.on(PluginEventType.ERROR, event => {
       callback(event.data.error, event.data.context);
     });
-    
+
     this.disposables.push(disposable);
     return disposable;
   }
-  
+
   /**
    * 释放所有监听器
    */
@@ -526,7 +525,7 @@ export class CommonEventListeners {
 // 性能监控事件
 export class PerformanceEventMonitor {
   private eventManager = getEventManager();
-  
+
   /**
    * 监控方法执行时间
    */
@@ -536,34 +535,38 @@ export class PerformanceEventMonitor {
     descriptor: TypedPropertyDescriptor<T>
   ): TypedPropertyDescriptor<T> {
     const originalMethod = descriptor.value!;
-    
-    descriptor.value = (async function (this: any, ...args: any[]) {
+
+    descriptor.value = async function (this: any, ...args: any[]) {
       const startTime = Date.now();
-      
+
       try {
         const result = await originalMethod.apply(this, args);
         const duration = Date.now() - startTime;
-        
-        this.eventManager.emit(EventFactory.createPerformanceMetric(
-          `${target.constructor.name}.${propertyName}`,
-          duration,
-          { args: args.length }
-        ));
-        
+
+        this.eventManager.emit(
+          EventFactory.createPerformanceMetric(
+            `${target.constructor.name}.${propertyName}`,
+            duration,
+            { args: args.length }
+          )
+        );
+
         return result;
       } catch (error) {
         const duration = Date.now() - startTime;
-        
-        this.eventManager.emit(EventFactory.createPerformanceMetric(
-          `${target.constructor.name}.${propertyName}`,
-          duration,
-          { error: true, args: args.length }
-        ));
-        
+
+        this.eventManager.emit(
+          EventFactory.createPerformanceMetric(
+            `${target.constructor.name}.${propertyName}`,
+            duration,
+            { error: true, args: args.length }
+          )
+        );
+
         throw error;
       }
-    }) as any;
-    
+    } as any;
+
     return descriptor;
   }
 }

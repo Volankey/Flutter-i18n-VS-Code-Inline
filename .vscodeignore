@@ -1,14 +1,51 @@
+# Development files
 .vscode/**
 .vscode-test/**
 out/**
 node_modules/**
 src/**
-.gitignore
-.yarnrc
+
+# Build and config files
 esbuild.js
+tsconfig.json
+eslint.config.mjs
+.prettierrc
+.prettierignore
+.nycrc.json
+.npmrc
+
+# Git and version control
+.gitignore
+.husky/**
+.commitlintrc.js
+
+# Documentation and examples
 vsc-extension-quickstart.md
-**/tsconfig.json
-**/eslint.config.mjs
+DEVELOPMENT.md
+example/**
+demo.sh
+test_plugin.js
+example-custom-patterns.json
+
+# Test files
+**/*.test.ts
+**/*.test.js
+test/**
+
+# Source maps and TypeScript
 **/*.map
 **/*.ts
+!**/*.d.ts
+
+# Logs and temporary files
+*.log
+.DS_Store
 **/.vscode-test.*
+
+# Package manager files
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# CI/CD
+.github/**

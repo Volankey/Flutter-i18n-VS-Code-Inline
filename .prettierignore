@@ -1,0 +1,26 @@
+# Build outputs
+dist/
+out/
+node_modules/
+
+# VS Code extension files
+*.vsix
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Generated files
+*.d.ts
+*.js.map
+
+# Example project
+example/
+
+# Documentation
+*.md

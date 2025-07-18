@@ -65,7 +65,7 @@ export class I18nHoverProvider implements vscode.HoverProvider {
   protected createHoverContent(reference: I18nReference): vscode.MarkdownString | null {
     const translations = this.arbManager.getAllTranslations(reference.key);
     const status = this.getTranslationStatus(reference.key, translations);
-    
+
     if (status === TranslationStatus.MISSING) {
       return this.createMissingTranslationHover(reference.key);
     }
@@ -79,7 +79,7 @@ export class I18nHoverProvider implements vscode.HoverProvider {
 
     // 添加标题
     const statusIcon = this.getStatusIcon(status);
-    markdown.appendMarkdown(`### ${statusIcon} Translation Key: \`${reference.key}\`\n\n`);
+    markdown.appendMarkdown(`**${statusIcon} Translation Key:** \`${reference.key}\`\n\n`);
 
     // 添加详细翻译内容
     this.addTranslationsToMarkdown(markdown, translations, reference.key);
@@ -102,14 +102,14 @@ export class I18nHoverProvider implements vscode.HoverProvider {
   private createMissingTranslationHover(key: string): vscode.MarkdownString {
     const markdown = new vscode.MarkdownString();
     markdown.isTrusted = true;
-    
-    markdown.appendMarkdown(`### ❌ Missing Translation: \`${key}\`\n\n`);
+
+    markdown.appendMarkdown(`**❌ Missing Translation:** \`${key}\`\n\n`);
     markdown.appendMarkdown('This translation key is not found in any ARB files.\n\n');
-    
+
     // 添加创建按钮
     const createCommand = `command:flutter-i18n-vscode-inline.createTranslation?${encodeURIComponent(JSON.stringify([key]))}`;
     markdown.appendMarkdown(`[$(plus) Create Translation](${createCommand})\n\n`);
-    
+
     return markdown;
   }
 
@@ -121,42 +121,41 @@ export class I18nHoverProvider implements vscode.HoverProvider {
     translations: Map<string, string>
   ): void {
     const config = vscode.workspace.getConfiguration('flutter-i18n-vscode-inline');
-    
+
     // 检查是否启用翻译预览功能
     const showPreview = config.get('showTranslationPreview', true);
     if (!showPreview) {
       return;
     }
-    
+
     // 获取主要翻译（优先显示配置的语言）
     const sortedTranslations = this.sortTranslations(translations);
     const primaryTranslation = sortedTranslations[0];
-    
+
     if (!primaryTranslation) {
       return;
     }
-    
+
     const [locale, translation] = primaryTranslation;
     const flagEmoji = this.getLocaleFlag(locale);
     const localeName = this.getLocaleName(locale);
     const escapedTranslation = this.escapeMarkdown(translation);
-    
-    // 使用超级醒目的 Markdown 样式
+
+    // 使用简洁的 Markdown 样式
     markdown.appendMarkdown('\n');
-    markdown.appendMarkdown('# 🎯 **TRANSLATION PREVIEW**\n\n');
-    
-    // 使用超大号字体和醒目的背景色块显示翻译
-    markdown.appendMarkdown('## ');
-    markdown.appendMarkdown(`${flagEmoji} \`\`\`\n${escapedTranslation}\n\`\`\`\n\n`);
-    
-    // 显示语言信息，使用醒目的格式
-    markdown.appendMarkdown(`### 📍 **${localeName}** (${locale})\n\n`);
-    
-    // 如果有多个翻译，显示醒目的提示
+    markdown.appendMarkdown('**🎯 TRANSLATION PREVIEW**\n\n');
+
+    // 使用代码块显示翻译
+    markdown.appendMarkdown(`${flagEmoji} \`${escapedTranslation}\`\n\n`);
+
+    // 显示语言信息
+    markdown.appendMarkdown(`**📍 ${localeName}** (${locale})\n\n`);
+
+    // 如果有多个翻译，显示提示
     if (translations.size > 1) {
-      markdown.appendMarkdown(`> ### 📚 **+${translations.size - 1} MORE TRANSLATIONS BELOW** ⬇️\n\n`);
+      markdown.appendMarkdown(`> **📚 +${translations.size - 1} more translations below** ⬇️\n\n`);
     }
-    
+
     markdown.appendMarkdown('---\n\n');
   }
 
@@ -164,32 +163,32 @@ export class I18nHoverProvider implements vscode.HoverProvider {
    * 添加翻译内容到 Markdown
    */
   private addTranslationsToMarkdown(
-    markdown: vscode.MarkdownString, 
+    markdown: vscode.MarkdownString,
     translations: Map<string, string>,
     key: string
   ): void {
     const config = vscode.workspace.getConfiguration('flutter-i18n-vscode-inline');
     const maxLanguages = config.get('hoverMaxLanguages', 5);
     const showAllLanguages = config.get('hoverShowAllLanguages', false);
-    
+
     const sortedTranslations = this.sortTranslations(translations);
-    
+
     // 如果只有一个翻译，不需要显示详细列表（已在预览中显示）
     if (translations.size <= 1) {
       return;
     }
-    
-    const displayTranslations = showAllLanguages ? 
-      sortedTranslations : 
-      sortedTranslations.slice(0, maxLanguages);
 
-    markdown.appendMarkdown('#### All Translations:\n\n');
-    
+    const displayTranslations = showAllLanguages
+      ? sortedTranslations
+      : sortedTranslations.slice(0, maxLanguages);
+
+    markdown.appendMarkdown('**All Translations:**\n\n');
+
     for (const [locale, translation] of displayTranslations) {
       const flagEmoji = this.getLocaleFlag(locale);
       const localeName = this.getLocaleName(locale);
       const escapedTranslation = this.escapeMarkdown(translation);
-      
+
       markdown.appendMarkdown(`**${flagEmoji} ${localeName} (${locale}):**\n`);
       markdown.appendMarkdown(`> ${escapedTranslation}\n\n`);
     }
@@ -198,7 +197,7 @@ export class I18nHoverProvider implements vscode.HoverProvider {
     if (!showAllLanguages && sortedTranslations.length > maxLanguages) {
       const remainingCount = sortedTranslations.length - maxLanguages;
       markdown.appendMarkdown(`*... and ${remainingCount} more languages*\n\n`);
-      
+
       const showAllCommand = `command:flutter-i18n-vscode-inline.showAllTranslations?${encodeURIComponent(JSON.stringify([key]))}`;
       markdown.appendMarkdown(`[$(eye) Show All Languages](${showAllCommand})\n\n`);
     }
@@ -212,21 +211,21 @@ export class I18nHoverProvider implements vscode.HoverProvider {
       return;
     }
 
-    markdown.appendMarkdown('#### Parameters:\n\n');
-    
+    markdown.appendMarkdown('**Parameters:**\n\n');
+
     for (const param of reference.parameters) {
       markdown.appendMarkdown(`- \`${param}\`: String`);
       markdown.appendMarkdown('\n');
     }
-    
+
     markdown.appendMarkdown('\n');
 
     // 获取参数定义（从 ARB 文件）
     const arbEntry = this.getArbEntry(reference.key);
-    
+
     if (arbEntry && arbEntry.placeholders && Object.keys(arbEntry.placeholders).length > 0) {
-      markdown.appendMarkdown('#### ARB Placeholders:\n\n');
-      
+      markdown.appendMarkdown('**ARB Placeholders:**\n\n');
+
       for (const [name, placeholder] of Object.entries(arbEntry.placeholders)) {
         markdown.appendMarkdown(`- \`${name}\``);
         if (placeholder.type) {
@@ -237,7 +236,7 @@ export class I18nHoverProvider implements vscode.HoverProvider {
         }
         markdown.appendMarkdown('\n');
       }
-      
+
       markdown.appendMarkdown('\n');
     }
   }
@@ -246,24 +245,26 @@ export class I18nHoverProvider implements vscode.HoverProvider {
    * 添加统计信息到 Markdown
    */
   private addStatisticsToMarkdown(
-    markdown: vscode.MarkdownString, 
+    markdown: vscode.MarkdownString,
     translations: Map<string, string>
   ): void {
     const totalLocales = this.arbManager.getArbFiles().size;
     const translatedLocales = translations.size;
     const missingLocales = totalLocales - translatedLocales;
-    
-    const completionPercentage = totalLocales > 0 ? 
-      Math.round((translatedLocales / totalLocales) * 100) : 0;
-    
-    markdown.appendMarkdown('#### Statistics:\n\n');
-    markdown.appendMarkdown(`- **Completion:** ${completionPercentage}% (${translatedLocales}/${totalLocales} languages)\n`);
-    
+
+    const completionPercentage =
+      totalLocales > 0 ? Math.round((translatedLocales / totalLocales) * 100) : 0;
+
+    markdown.appendMarkdown('**Statistics:**\n\n');
+    markdown.appendMarkdown(
+      `- **Completion:** ${completionPercentage}% (${translatedLocales}/${totalLocales} languages)\n`
+    );
+
     if (missingLocales > 0) {
       const missingLocalesList = this.getMissingLocales(translations);
       markdown.appendMarkdown(`- **Missing in:** ${missingLocalesList.join(', ')}\n`);
     }
-    
+
     markdown.appendMarkdown('\n');
   }
 
@@ -271,16 +272,16 @@ export class I18nHoverProvider implements vscode.HoverProvider {
    * 添加操作按钮到 Markdown
    */
   private addActionsToMarkdown(markdown: vscode.MarkdownString, key: string): void {
-    markdown.appendMarkdown('#### Actions:\n\n');
-    
+    markdown.appendMarkdown('**Actions:**\n\n');
+
     // 编辑翻译
     const editCommand = `command:flutter-i18n-vscode-inline.editTranslation?${encodeURIComponent(JSON.stringify([key]))}`;
     markdown.appendMarkdown(`[$(edit) Edit Translations](${editCommand}) `);
-    
+
     // 复制键名
     const copyCommand = `command:flutter-i18n-vscode-inline.copyKey?${encodeURIComponent(JSON.stringify([key]))}`;
     markdown.appendMarkdown(`[$(copy) Copy Key](${copyCommand}) `);
-    
+
     // 查找用法
     const findCommand = `command:flutter-i18n-vscode-inline.findUsages?${encodeURIComponent(JSON.stringify([key]))}`;
     markdown.appendMarkdown(`[$(search) Find Usages](${findCommand})\n\n`);
@@ -292,7 +293,7 @@ export class I18nHoverProvider implements vscode.HoverProvider {
   private getTranslationStatus(key: string, translations: Map<string, string>): TranslationStatus {
     const totalLocales = this.arbManager.getArbFiles().size;
     const translatedLocales = translations.size;
-    
+
     if (translatedLocales === 0) {
       return TranslationStatus.MISSING;
     } else if (translatedLocales < totalLocales) {
@@ -325,23 +326,34 @@ export class I18nHoverProvider implements vscode.HoverProvider {
    */
   private sortTranslations(translations: Map<string, string>): [string, string][] {
     const config = vscode.workspace.getConfiguration('flutter-i18n-vscode-inline');
-    const priorityLanguages = config.get('hoverPriorityLanguages', ['en', 'zh', 'es', 'fr', 'de', 'ja']);
-    
+    const priorityLanguages = config.get('hoverPriorityLanguages', [
+      'en',
+      'zh',
+      'es',
+      'fr',
+      'de',
+      'ja',
+    ]);
+
     const entries = Array.from(translations.entries());
-    
+
     return entries.sort(([localeA], [localeB]) => {
       const priorityA = priorityLanguages.indexOf(localeA);
       const priorityB = priorityLanguages.indexOf(localeB);
-      
+
       // 如果都在优先列表中，按优先级排序
       if (priorityA !== -1 && priorityB !== -1) {
         return priorityA - priorityB;
       }
-      
+
       // 优先语言排在前面
-      if (priorityA !== -1) return -1;
-      if (priorityB !== -1) return 1;
-      
+      if (priorityA !== -1) {
+        return -1;
+      }
+      if (priorityB !== -1) {
+        return 1;
+      }
+
       // 其他语言按字母顺序排序
       return localeA.localeCompare(localeB);
     });
@@ -352,32 +364,32 @@ export class I18nHoverProvider implements vscode.HoverProvider {
    */
   private getLocaleFlag(locale: string): string {
     const flagMap: { [key: string]: string } = {
-      'en': '🇺🇸',
-      'zh': '🇨🇳',
-      'zh_CN': '🇨🇳',
-      'zh_TW': '🇹🇼',
-      'zh_HK': '🇭🇰',
-      'es': '🇪🇸',
-      'fr': '🇫🇷',
-      'de': '🇩🇪',
-      'ja': '🇯🇵',
-      'ko': '🇰🇷',
-      'it': '🇮🇹',
-      'pt': '🇵🇹',
-      'ru': '🇷🇺',
-      'ar': '🇸🇦',
-      'hi': '🇮🇳',
-      'th': '🇹🇭',
-      'vi': '🇻🇳',
-      'tr': '🇹🇷',
-      'pl': '🇵🇱',
-      'nl': '🇳🇱',
-      'sv': '🇸🇪',
-      'da': '🇩🇰',
-      'no': '🇳🇴',
-      'fi': '🇫🇮'
+      en: '🇺🇸',
+      zh: '🇨🇳',
+      zh_CN: '🇨🇳',
+      zh_TW: '🇹🇼',
+      zh_HK: '🇭🇰',
+      es: '🇪🇸',
+      fr: '🇫🇷',
+      de: '🇩🇪',
+      ja: '🇯🇵',
+      ko: '🇰🇷',
+      it: '🇮🇹',
+      pt: '🇵🇹',
+      ru: '🇷🇺',
+      ar: '🇸🇦',
+      hi: '🇮🇳',
+      th: '🇹🇭',
+      vi: '🇻🇳',
+      tr: '🇹🇷',
+      pl: '🇵🇱',
+      nl: '🇳🇱',
+      sv: '🇸🇪',
+      da: '🇩🇰',
+      no: '🇳🇴',
+      fi: '🇫🇮',
     };
-    
+
     return flagMap[locale] || '🌐';
   }
 
@@ -386,32 +398,32 @@ export class I18nHoverProvider implements vscode.HoverProvider {
    */
   private getLocaleName(locale: string): string {
     const nameMap: { [key: string]: string } = {
-      'en': 'English',
-      'zh': 'Chinese',
-      'zh_CN': 'Chinese (Simplified)',
-      'zh_TW': 'Chinese (Traditional)',
-      'zh_HK': 'Chinese (Hong Kong)',
-      'es': 'Spanish',
-      'fr': 'French',
-      'de': 'German',
-      'ja': 'Japanese',
-      'ko': 'Korean',
-      'it': 'Italian',
-      'pt': 'Portuguese',
-      'ru': 'Russian',
-      'ar': 'Arabic',
-      'hi': 'Hindi',
-      'th': 'Thai',
-      'vi': 'Vietnamese',
-      'tr': 'Turkish',
-      'pl': 'Polish',
-      'nl': 'Dutch',
-      'sv': 'Swedish',
-      'da': 'Danish',
-      'no': 'Norwegian',
-      'fi': 'Finnish'
+      en: 'English',
+      zh: 'Chinese',
+      zh_CN: 'Chinese (Simplified)',
+      zh_TW: 'Chinese (Traditional)',
+      zh_HK: 'Chinese (Hong Kong)',
+      es: 'Spanish',
+      fr: 'French',
+      de: 'German',
+      ja: 'Japanese',
+      ko: 'Korean',
+      it: 'Italian',
+      pt: 'Portuguese',
+      ru: 'Russian',
+      ar: 'Arabic',
+      hi: 'Hindi',
+      th: 'Thai',
+      vi: 'Vietnamese',
+      tr: 'Turkish',
+      pl: 'Polish',
+      nl: 'Dutch',
+      sv: 'Swedish',
+      da: 'Danish',
+      no: 'Norwegian',
+      fi: 'Finnish',
     };
-    
+
     return nameMap[locale] || locale.toUpperCase();
   }
 
@@ -421,7 +433,7 @@ export class I18nHoverProvider implements vscode.HoverProvider {
   private getMissingLocales(translations: Map<string, string>): string[] {
     const allLocales = Array.from(this.arbManager.getArbFiles().keys());
     const translatedLocales = Array.from(translations.keys());
-    
+
     return allLocales.filter(locale => !translatedLocales.includes(locale));
   }
 
@@ -434,14 +446,14 @@ export class I18nHoverProvider implements vscode.HoverProvider {
     if (enArbFile && enArbFile.entries.has(key)) {
       return enArbFile.entries.get(key);
     }
-    
+
     // 如果没有英文版本，尝试获取默认语言版本
     const defaultLocale = this.arbManager.getDefaultLocale();
     const defaultArbFile = this.arbManager.getArbFile(defaultLocale);
     if (defaultArbFile && defaultArbFile.entries.has(key)) {
       return defaultArbFile.entries.get(key);
     }
-    
+
     return undefined;
   }
 
@@ -481,7 +493,7 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
     // 添加额外信息
     this.addTranslationTips(baseContent, reference);
     this.addRelatedKeys(baseContent, reference.key);
-    
+
     return baseContent;
   }
 
@@ -495,24 +507,26 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
     }
 
     const tips: string[] = [];
-    
+
     // 检查参数使用
     if (reference.parameters && reference.parameters.length > 0) {
-      tips.push('💡 This key uses parameters. Make sure all translations include the same placeholders.');
+      tips.push(
+        '💡 This key uses parameters. Make sure all translations include the same placeholders.'
+      );
     }
-    
+
     // 检查键名约定
     if (reference.key.includes('_')) {
       tips.push('📝 Consider using camelCase for consistency (e.g., `myKey` instead of `my_key`).');
     }
-    
+
     // 检查长度
     const translations = this.arbManager.getAllTranslations(reference.key);
     const hasLongTranslations = Array.from(translations.values()).some(t => t.length > 100);
     if (hasLongTranslations) {
       tips.push('📏 Some translations are quite long. Consider breaking them into smaller parts.');
     }
-    
+
     if (tips.length > 0) {
       markdown.appendMarkdown('#### Tips:\n\n');
       for (const tip of tips) {
@@ -536,16 +550,16 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
     }
 
     markdown.appendMarkdown('#### Related Keys:\n\n');
-    
+
     for (const relatedKey of relatedKeys.slice(0, 5)) {
       const editCommand = `command:flutter-i18n-vscode-inline.editTranslation?${encodeURIComponent(JSON.stringify([relatedKey]))}`;
       markdown.appendMarkdown(`- [\`${relatedKey}\`](${editCommand})\n`);
     }
-    
+
     if (relatedKeys.length > 5) {
       markdown.appendMarkdown(`\n*... and ${relatedKeys.length - 5} more*\n`);
     }
-    
+
     markdown.appendMarkdown('\n');
   }
 
@@ -556,19 +570,21 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
     const allKeys = this.arbManager.getAllKeysArray();
     const keyParts = key.split(/[._]/);
     const relatedKeys: string[] = [];
-    
+
     for (const otherKey of allKeys) {
-      if (otherKey === key) continue;
-      
+      if (otherKey === key) {
+        continue;
+      }
+
       // 检查是否有共同前缀
       const otherParts = otherKey.split(/[._]/);
       const commonPrefixLength = this.getCommonPrefixLength(keyParts, otherParts);
-      
+
       if (commonPrefixLength > 0) {
         relatedKeys.push(otherKey);
       }
     }
-    
+
     // 按相似度排序
     return relatedKeys.sort((a, b) => {
       const similarityA = this.calculateSimilarity(key, a);
@@ -583,7 +599,7 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
   private getCommonPrefixLength(parts1: string[], parts2: string[]): number {
     let length = 0;
     const minLength = Math.min(parts1.length, parts2.length);
-    
+
     for (let i = 0; i < minLength; i++) {
       if (parts1[i] === parts2[i]) {
         length++;
@@ -591,7 +607,7 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
         break;
       }
     }
-    
+
     return length;
   }
 
@@ -601,11 +617,11 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
   private calculateSimilarity(str1: string, str2: string): number {
     const longer = str1.length > str2.length ? str1 : str2;
     const shorter = str1.length > str2.length ? str2 : str1;
-    
+
     if (longer.length === 0) {
       return 1.0;
     }
-    
+
     const editDistance = this.levenshteinDistance(longer, shorter);
     return (longer.length - editDistance) / longer.length;
   }
@@ -615,15 +631,15 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
    */
   private levenshteinDistance(str1: string, str2: string): number {
     const matrix = [];
-    
+
     for (let i = 0; i <= str2.length; i++) {
       matrix[i] = [i];
     }
-    
+
     for (let j = 0; j <= str1.length; j++) {
       matrix[0][j] = j;
     }
-    
+
     for (let i = 1; i <= str2.length; i++) {
       for (let j = 1; j <= str1.length; j++) {
         if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
@@ -637,7 +653,7 @@ export class EnhancedI18nHoverProvider extends I18nHoverProvider {
         }
       }
     }
-    
+
     return matrix[str2.length][str1.length];
   }
 }

@@ -40,7 +40,7 @@ export interface L10nConfig {
   'untranslated-messages-file'?: string;
   'output-class'?: string;
   'preferred-supported-locales'?: string[];
-  'header'?: string;
+  header?: string;
   'header-file'?: string;
   'use-deferred-loading'?: boolean;
   'gen-inputs-and-outputs-list'?: string;
@@ -48,7 +48,7 @@ export interface L10nConfig {
   'project-dir'?: string;
   'required-resource-attributes'?: boolean;
   'nullable-getter'?: boolean;
-  'format'?: boolean;
+  format?: boolean;
   'use-escaping'?: boolean;
 }
 
@@ -155,7 +155,7 @@ export enum I18nPatternType {
   /** Intl.message() */
   INTL_MESSAGE = 'intl_message',
   /** 自定义模式 */
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 /**
@@ -217,7 +217,7 @@ export enum TranslationStatus {
   /** 缺失 - 没有翻译 */
   MISSING = 'missing',
   /** 未使用 - 有翻译但代码中未使用 */
-  UNUSED = 'unused'
+  UNUSED = 'unused',
 }
 
 /**
@@ -271,7 +271,7 @@ export enum I18nDiagnosticType {
   /** 无效的键名 */
   INVALID_KEY = 'invalid_key',
   /** ARB 文件格式错误 */
-  ARB_FORMAT_ERROR = 'arb_format_error'
+  ARB_FORMAT_ERROR = 'arb_format_error',
 }
 
 /**
@@ -476,7 +476,7 @@ export enum PluginEventType {
   /** 诊断更新 */
   DIAGNOSTICS_UPDATED = 'diagnostics_updated',
   /** 错误事件 */
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 /**
@@ -508,8 +508,7 @@ export type DeepPartial<T> = {
  * 异步结果类型
  */
 export type AsyncResult<T, E = Error> = Promise<
-  | { success: true; data: T }
-  | { success: false; error: E }
+  { success: true; data: T } | { success: false; error: E }
 >;
 
 /**
