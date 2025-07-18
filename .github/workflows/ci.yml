@@ -64,6 +64,10 @@ jobs:
     needs: [test]
     # 只在 main 分支且 commit 信息包含 "version:" 时运行
     if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'version:')
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: read
 
     steps:
       - name: Checkout code
