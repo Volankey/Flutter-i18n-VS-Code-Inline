@@ -12,6 +12,7 @@ eslint.config.mjs
 .prettierrc
 .prettierignore
 .nycrc.json
+.c8rc.json
 .npmrc
 
 # Git and version control
@@ -22,6 +23,11 @@ eslint.config.mjs
 # Documentation and examples
 vsc-extension-quickstart.md
 DEVELOPMENT.md
+AUTO_PUBLISH_GUIDE.md
+CODE_QUALITY_SUGGESTIONS.md
+IMPROVEMENTS_SUMMARY.md
+PRE_PUBLISH_CHECKLIST.md
+PUBLISHING.md
 example/**
 demo.sh
 test_plugin.js
