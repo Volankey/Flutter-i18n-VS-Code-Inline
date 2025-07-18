@@ -81,13 +81,18 @@ jobs:
         run: pnpm install
 
       - name: Build extension
-        run: pnpm run vsce:package
+        id: build_extension
+        run: |
+          pnpm run vsce:package
+          VSIX_FILE=$(ls flutter-i18n-vscode-inline-*.vsix)
+          echo "vsix_file=$VSIX_FILE" >> $GITHUB_OUTPUT
+          echo "✅ 构建完成: $VSIX_FILE"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: vscode-extension
-          path: 'flutter-i18n-vscode-inline-*.vsix'
+          path: ${{ steps.build_extension.outputs.vsix_file }}
 
   # 检测版本发布并自动发布到 VS Code Marketplace
   publish:
@@ -137,14 +142,19 @@ jobs:
         run: pnpm install
 
       - name: Build extension for release
-        run: pnpm run vsce:package
+        id: build_release
+        run: |
+          pnpm run vsce:package
+          VSIX_FILE=$(ls flutter-i18n-vscode-inline-*.vsix)
+          echo "vsix_file=$VSIX_FILE" >> $GITHUB_OUTPUT
+          echo "✅ 发布构建完成: $VSIX_FILE"
 
       - name: Publish to VS Code Marketplace
         uses: HaaLeo/publish-vscode-extension@v2
         with:
           pat: ${{ secrets.AZURE_DEV }}
           registryUrl: https://marketplace.visualstudio.com
-          extensionFile: 'flutter-i18n-vscode-inline-*.vsix'
+          extensionFile: ${{ steps.build_release.outputs.vsix_file }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -167,10 +177,10 @@ jobs:
             - [Documentation](https://github.com/volankey/Flutter-i18n-VS-Code-Inline#readme)
           draft: false
           prerelease: false
-          files: 'flutter-i18n-vscode-inline-*.vsix'
+          files: ${{ steps.build_release.outputs.vsix_file }}
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
           name: vscode-extension-release-v${{ steps.extract_version.outputs.version }}
-          path: 'flutter-i18n-vscode-inline-*.vsix'
+          path: ${{ steps.build_release.outputs.vsix_file }}
