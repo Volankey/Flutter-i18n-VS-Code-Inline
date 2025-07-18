@@ -29,7 +29,7 @@
 ### 🚀 Inline Translation Preview and Editing
 Instantly view translations in your code without context switching. Click to edit any language's translation in place. This is the best way to boost Flutter localization efficiency.
 
-![Feature Demo GIF](https://your-repo-url/demo.gif)
+![Feature Demo GIF](https://raw.githubusercontent.com/Volankey/Flutter-i18n-VS-Code-Inline/refs/heads/main/example.gif)
 
 ### Key Features:
 
